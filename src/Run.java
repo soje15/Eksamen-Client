@@ -3,6 +3,7 @@ import configloader.ConfigLoader;
 import sdk.connection.ResponseCallback;
 import sdk.models.AccessToken;
 import sdk.models.Lecture;
+import sdk.models.Review;
 import sdk.models.User;
 import sdk.services.Service;
 
@@ -13,7 +14,30 @@ import java.util.ArrayList;
  */
 
 
+
 public class Run {
+    public static void main(String[] args) {
+        Service service = new Service();
+
+        Review review = new Review();
+        review.setId(9);
+        review.setUserId(2);
+        review.setLectureId(6);
+        review.setRating(5);
+        review.setComment("hej");
+
+        service.addReview(review, new ResponseCallback<Review>() {
+            public void success(Review data) {
+                System.out.println(data);
+            }
+
+            public void error(int status) {
+                System.out.println(status);
+            }
+        });
+    }
+
+/*
 
     public static void main(String[] args) {
         Digester digester = new Digester();
@@ -40,6 +64,7 @@ public class Run {
     }
 
 }
+*/
     /*
     public static void main(String[] args) {
         ConfigLoader.parseConfig();
@@ -88,11 +113,9 @@ public class Run {
 */
 
 
-
-
 //        MainMenuView mainMenuView = new MainMenuView(controller, service);
 
-  //      mainMenuView.presentMenu2();
+    //      mainMenuView.presentMenu2();
 
 
 
@@ -206,3 +229,4 @@ public class Run {
 
 */
 
+}

@@ -116,7 +116,7 @@ public class Service {
     public void create(Lecture lecture, final ResponseCallback<Lecture> responseCallback) {
 
         try {
-            HttpPost postRequest = new HttpPost(ConnectionImpl.serverURL + "/books");
+            HttpPost postRequest = new HttpPost(ConnectionImpl.serverURL + "/lecture");
 
             postRequest.addHeader("Content-Type", "application/json");
 
@@ -142,6 +142,41 @@ public class Service {
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+        }
+
+    }
+
+
+    public void addReview(Review review, final ResponseCallback<Review> responseCallback) {
+
+        try {
+            HttpPost postRequest = new HttpPost(ConnectionImpl.serverURL + "/student/review");
+
+            postRequest.addHeader("Content-Type", "application/json");
+
+
+            StringEntity jsonReview = new StringEntity(gson.toJson(review));
+            postRequest.setEntity(jsonReview);
+
+            connectionImpl.execute(postRequest, new ResponseParser() {
+
+                public void payload(String json) {
+
+                   Review newReview = gson.fromJson(json, Review.class);
+                    responseCallback.success(newReview);
+
+
+                }
+
+
+                public void error(int status) {
+                    responseCallback.error(status);
+                }
+            });
+
+
+        } catch (UnsupportedEncodingException e) {
+
         }
 
     }
@@ -224,44 +259,9 @@ public class Service {
     }
 
 
-    public void login(String cbsMail, String password, final ResponseCallback<User> responseCallback) {
-
-        HttpPost postRequest = new HttpPost(ConnectionImpl.serverURL + "/login");
-
-        postRequest.addHeader("Content-Type", "application/json");
-
-        User login = new User();
-        login.setCbsMail(cbsMail);
-        login.setPassword(password);
-
-        try {
-
-            StringEntity loginDetails = new StringEntity(this.gson.toJson(login));
 
 
-
-            this.connectionImpl.execute(postRequest, new ResponseParser() {
-                public void payload(String json) {
-                    System.out.println("Payload initialized");
-
-                    User user = gson.fromJson(json, User.class);
-
-                    responseCallback.success(user);
-                }
-
-                public void error(int status) {
-                    responseCallback.error(status);
-                }
-            });
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-    }
-
-
-    public void findById(String id, final ResponseCallback<Course> responseCallback) {
+    public void findById(int id, final ResponseCallback<ArrayList<Course>> responseCallback) {
         HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/course/" + id);
       //getRequest.addHeader("Content-Type", "application/json");
 
@@ -270,9 +270,10 @@ public class Service {
             public void payload(String json) {
                 System.out.println("Payload initialized");
 
-                Course course = gson.fromJson(json, Course.class);
+                ArrayList<Course> courses = gson.fromJson(json, new TypeToken<ArrayList<Course>>(){}.getType());
 
-                responseCallback.success(course);
+
+                responseCallback.success(courses);
             }
 
             public void error(int status) {

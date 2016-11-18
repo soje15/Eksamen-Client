@@ -14,9 +14,13 @@ public class LoginService {
         loginToken = token;
     }
 
+
+
     public static User getAccessToken(){
         return loginToken;
     }
+
+
     public static void clear(){
         loginToken = null;
     }

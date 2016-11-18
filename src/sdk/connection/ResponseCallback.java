@@ -7,6 +7,8 @@ public interface ResponseCallback<T> {
 
         //Interface - generisk, Kan ikke hardcodes som arraylist.
         //Java generics, hedder T. Brugeren kan selv definere, hvad T skal være.
+
+
     void success(T data);
 
     void error(int status);

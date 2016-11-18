@@ -29,11 +29,6 @@ public class MainMenuView {
             this.viewHandler = viewHandler;
             this.service = service;
 
-            TestView testView = new TestView(viewHandler,service);
-            UserView userView = new UserView(viewHandler,service);
-            this.testView = testView;
-            this.userView = userView;
-
             MainMenu();
         }
 
@@ -49,18 +44,23 @@ public class MainMenuView {
             switch (choice) {
 
                 case 1:
-                    System.out.println("Type in your CBS mail");
+
+                    final User user = new User();
                     Scanner inputReaderUsername = new Scanner(System.in);
-                    final String username = inputReaderUsername.next();
+
+                    System.out.println("Type in your CBS mail");
+                    final String username = inputReader.next();
+
 
                     System.out.println("Type in your password");
-                    Scanner inputReaderPassword = new Scanner(System.in);
-                    String password = inputReaderPassword.next();
+                    String password = inputReader.next();
+
 
                     String hashedPassword = Digester.hashWithSalt(password);
                     String doubleHashed = Digester.hashWithSalt(hashedPassword);
 
                     System.out.println(doubleHashed);
+
 
                     try {
 
@@ -68,8 +68,10 @@ public class MainMenuView {
                             public void success(User data) {
 
                                 if (data != null) {
+                                    user.setCbsMail(data.getCbsMail());
+                                    user.setType(data.getType());
 
-                                    UserView userview = new UserView(viewHandler, service);
+                                    UserView userview = new UserView(viewHandler, service, data);
                                     userview.userMenu();
                                 }else {
                                     System.out.println("forkert login");
