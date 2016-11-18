@@ -11,14 +11,15 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 
-public class Connection {
+public class ConnectionImpl {
 
     //Server URL defineret som statisk felt-variabel
-  public static String serverURL = "https://momentify.eu.ngrok.io/api";
+  public static String serverURL = "http://localhost:6112/api";
+
   private CloseableHttpClient httpClient;
 
 
-  public Connection(){
+  public ConnectionImpl(){
     this.httpClient = HttpClients.createDefault();
   }
 
@@ -36,7 +37,7 @@ public class Connection {
           //Execute metoden kigger på om status på serveren er mellem 200/300. Da alt under 400/500 betyder der skete en
           //Fejl i http protokollen.
         if (status >= 200 && status < 300) {
-
+          System.out.println("Connected to " + serverURL);
             //Returnere en entity
           HttpEntity entity = response.getEntity();
           return entity != null ? EntityUtils.toString(entity) : null;
