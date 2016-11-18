@@ -1,4 +1,8 @@
 {
-    "SERVER_URL":"http://localhost:6112/api"
+    "SERVER_URL":"http://localhost:6112/api",
+    "HASH_SALT":"n0zaCTADRUuTb@JUp01n%5@(l@IAaLlZ",
+    "ENCRYPT_KEY":"40674244454045cb9a70040a30e1c007",
+    "ENCRYPTION": "TRUE"
+
 
 }

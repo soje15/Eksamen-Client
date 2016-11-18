@@ -1,10 +1,14 @@
 package view;
 
+import Encrypter.Digester;
 import controller.ViewHandler;
 import sdk.connection.ResponseCallback;
 import sdk.models.Lecture;
+import sdk.models.User;
 import sdk.services.Service;
 
+import javax.swing.text.View;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -36,11 +40,7 @@ public class MainMenuView {
     public void MainMenu() {
 
             System.out.println("Main menu");
-            System.out.println("(1) - Go to Userview");
-            System.out.println("(2) - Go to TestView");
-            System.out.println("(3) - Get all Lectures");
-            System.out.println("(4) - ");
-            System.out.println();
+            System.out.println("(1) - Log in");
             System.out.println("(5) - Shut down");
 
             Scanner inputReader = new Scanner(System.in);
@@ -49,42 +49,53 @@ public class MainMenuView {
             switch (choice) {
 
                 case 1:
-                    this.userView.userMenu();
+                    System.out.println("Type in your CBS mail");
+                    Scanner inputReaderUsername = new Scanner(System.in);
+                    final String username = inputReaderUsername.next();
+
+                    System.out.println("Type in your password");
+                    Scanner inputReaderPassword = new Scanner(System.in);
+                    String password = inputReaderPassword.next();
+
+                    String hashedPassword = Digester.hashWithSalt(password);
+                    String doubleHashed = Digester.hashWithSalt(hashedPassword);
+
+                    System.out.println(doubleHashed);
+
+                    try {
+
+                        service.authLogin(username, doubleHashed, new ResponseCallback<User>() {
+                            public void success(User data) {
+
+                                if (data != null) {
+
+                                    UserView userview = new UserView(viewHandler, service);
+                                    userview.userMenu();
+                                }else {
+                                    System.out.println("forkert login");
+                                    MainMenu();
+                                }
+
+                            }
+
+                            public void error(int status) {
+                                System.out.println(status);
+
+                            }
+                        });
+                    }catch (Exception e){
+                        System.out.println(e);
+                    }
+
 
                     break;
 
                 case 2:
-
-                    Scanner inputReader2 = new Scanner(System.in);
-                    String LectureID = inputReader.next();
-
-
-                    service.getAll(LectureID, new ResponseCallback<ArrayList<Lecture>>() {
-
-                        public void success(ArrayList<Lecture> data) {
-
-                            System.out.println("success");
-                        }
-
-                        public void error(int status) {
-
-                            System.out.println(status);
-                        }
-                    });
-
-                case 3:
-
-                    break;
-
-                case 4:
-
-                    //this.viewHandler.getUserView().presentMenu();
-                    break;
-
-                case 5:
+                System.exit(0);
 
 
                 default:
+                    System.out.println("Default case");
                    MainMenu();
                     break;
             }

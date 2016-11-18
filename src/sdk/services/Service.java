@@ -10,12 +10,8 @@ import org.apache.http.entity.StringEntity;
 import sdk.connection.ConnectionImpl;
 import sdk.connection.ResponseCallback;
 import sdk.connection.ResponseParser;
-import sdk.models.Course;
-import sdk.models.Lecture;
-import sdk.models.Delete;
-import sdk.models.User;
+import sdk.models.*;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
@@ -191,6 +187,42 @@ public class Service {
 
 
 
+    public void authLogin(String cbsMail, String password , final ResponseCallback<User> responseCallback){
+        HttpPost postRequest = new HttpPost(ConnectionImpl.serverURL + "/login");
+
+
+        final User userInfo = new User();
+        userInfo.setCbsMail(cbsMail);
+        userInfo.setPassword(password);
+
+        try {
+            StringEntity loginInfo = new StringEntity(this.gson.toJson(userInfo));
+            postRequest.setEntity(loginInfo);
+            postRequest.setHeader("Content-Type", "application/json");
+
+            this.connectionImpl.execute(postRequest, new ResponseParser() {
+                public void payload(String json) {
+                    User userToken = gson.fromJson(json, User.class);
+
+                    LoginService.setAccessToken(userToken);
+
+
+                    responseCallback.success(userToken);
+                }
+
+                public void error(int status) {
+                    responseCallback.error(status);
+
+
+                }
+            });
+        }catch (UnsupportedEncodingException e){
+            e.printStackTrace();
+        }
+
+
+    }
+
 
     public void login(String cbsMail, String password, final ResponseCallback<User> responseCallback) {
 
@@ -199,12 +231,14 @@ public class Service {
         postRequest.addHeader("Content-Type", "application/json");
 
         User login = new User();
-        login.setUsername(cbsMail);
+        login.setCbsMail(cbsMail);
         login.setPassword(password);
 
         try {
 
             StringEntity loginDetails = new StringEntity(this.gson.toJson(login));
+
+
 
             this.connectionImpl.execute(postRequest, new ResponseParser() {
                 public void payload(String json) {

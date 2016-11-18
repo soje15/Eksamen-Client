@@ -1,5 +1,7 @@
+import Encrypter.Digester;
 import configloader.ConfigLoader;
 import sdk.connection.ResponseCallback;
+import sdk.models.AccessToken;
 import sdk.models.Lecture;
 import sdk.models.User;
 import sdk.services.Service;
@@ -14,22 +16,27 @@ import java.util.ArrayList;
 public class Run {
 
     public static void main(String[] args) {
+        Digester digester = new Digester();
         Service service = new Service();
 
-        service.login("hej@hej.dk", "d73bb42f49c3c786dd45a00afc3b813b", new ResponseCallback<User>() {
-            public void success(User data) {
+        String cbsMail = "virk@virk.dk";
+        String password = "virk";
 
-                System.out.println("Logged in");
+        String hashPassword = digester.hashWithSalt(password);
+        String doubleHashed = digester.hashWithSalt(hashPassword);
 
-            }
+        System.out.println(doubleHashed);
 
-            public void error(int status) {
-                System.out.println("error");
-                System.out.println(status);
-            }
-        });
+   service.authLogin(cbsMail, doubleHashed, new ResponseCallback<User>() {
+       public void success(User data) {
+           System.out.println(data.getType());
 
+       }
 
+       public void error(int status) {
+           System.out.println(status);
+       }
+   });
     }
 
 }

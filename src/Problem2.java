@@ -1,3 +1,4 @@
+import configloader.ConfigLoader;
 import controller.ViewHandler;
 import sdk.services.Service;
 import view.MainMenuView;
@@ -7,7 +8,7 @@ import view.MainMenuView;
  */
 public class Problem2 {
     public static void main(String[] args) {
-
+        ConfigLoader.parseConfig();
         Service service = new Service();
         ViewHandler viewHandler = new ViewHandler();
 
