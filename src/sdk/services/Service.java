@@ -28,6 +28,9 @@ public class Service {
         this.gson = new Gson();
     }
 
+    //review/{lectureId}
+
+
     /**
      *
      * Følgende metode opdatere en bog ud fra et ID.
@@ -43,7 +46,7 @@ public class Service {
     public void update(String id, Lecture lecture, final ResponseCallback<Lecture> responseCallback){
 
         try {
-        HttpPut updateRequest = new HttpPut(ConnectionImpl.serverURL + "/books/" + id);
+        HttpPut updateRequest = new HttpPut(ConnectionImpl.serverURL + "/Lecture/" + id);
 
         updateRequest.addHeader("Content-Type", "application/json");
        // updateRequest.addHeader("authorization", "NTxX4aHJ974xlJY6N3xFJXBB1gG7w8G8u8C20IFwp5Qvd4v1kHWf9PjBb1bc5Ei8");
@@ -220,6 +223,28 @@ public class Service {
 
     }
 
+    public void getAllReviews(Integer lectureId, final ResponseCallback<ArrayList<Review>> responseCallback) {
+
+        HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/review/" + lectureId);
+
+
+        this.connectionImpl.execute(getRequest, new ResponseParser() {
+
+            public void payload(String json) {
+
+                ArrayList<Review> reviews = gson.fromJson(json, new TypeToken<ArrayList<Review>>(){}.getType());
+
+                responseCallback.success(reviews);
+
+
+            }
+
+            public void error(int status) {
+                responseCallback.error(status);
+            }
+        });
+
+    }
 
 
     public void authLogin(String cbsMail, String password , final ResponseCallback<User> responseCallback){

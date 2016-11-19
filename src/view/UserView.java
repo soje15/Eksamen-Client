@@ -32,6 +32,7 @@ public class UserView {
         System.out.println("(1) - Show all lectures");
         System.out.println("(2) - Show attended courses");
         System.out.println("(3) - Add review to course");
+        System.out.println("(4) - Show all reviews");
         System.out.println("(6) - Log out");
         System.out.println();
 
@@ -131,6 +132,11 @@ public class UserView {
 
 
                 break;
+
+            case 4:
+
+
+
 
             case 6:
                 LoginService.clear();

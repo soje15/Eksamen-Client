@@ -16,6 +16,26 @@ import java.util.ArrayList;
 
 
 public class Run {
+
+    public static void main(String[] args) {
+        Service service = new Service();
+
+        int ID = 16;
+
+        service.getAllReviews(ID, new ResponseCallback<ArrayList<Review>>() {
+            public void success(ArrayList<Review> data) {
+                for (Review reviews:data) {
+                    System.out.println("test" + reviews.getComment());
+                }
+            }
+
+            public void error(int status) {
+
+            }
+        });
+
+    }
+    /*
     public static void main(String[] args) {
         Service service = new Service();
 
@@ -36,6 +56,7 @@ public class Run {
             }
         });
     }
+    */
 
 /*
 
