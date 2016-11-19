@@ -8,6 +8,7 @@ import sdk.models.User;
 import sdk.services.Service;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 /**
  * Created by sorenkolbyejensen on 14/11/2016.
@@ -19,8 +20,28 @@ public class Run {
 
     public static void main(String[] args) {
         Service service = new Service();
+        Review review = new Review();
 
-        int ID = 16;
+        review.setId(3);
+        String ID = "17";
+
+service.updateReview(ID, review, new ResponseCallback<Review>() {
+    public void success(Review data) {
+
+        data.getComment();
+
+    }
+
+    public void error(int status) {
+
+    }
+});
+    }
+    /*
+    public static void main(String[] args) {
+        Service service = new Service();
+
+        int ID = 4;
 
         service.getAllReviews(ID, new ResponseCallback<ArrayList<Review>>() {
             public void success(ArrayList<Review> data) {
@@ -35,6 +56,7 @@ public class Run {
         });
 
     }
+    */
     /*
     public static void main(String[] args) {
         Service service = new Service();

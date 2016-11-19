@@ -9,11 +9,24 @@ public class Delete {
         return count;
     }
 
+    public String getResult() {
+        return result;
+    }
+
+    public boolean isDeleted() {
+        return softdelete;
+    }
+
+
     public void setCount(int count) {
         this.count = count;
     }
 
     private int count;
+
+    private String result;
+
+    private boolean softdelete;
 
 
 

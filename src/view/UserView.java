@@ -20,7 +20,7 @@ public class UserView {
 
     public UserView(ViewHandler viewHandler, Service service, User user) {
         this.viewHandler = viewHandler;
-      this.service = service;
+        this.service = service;
         this.user = user;
 
     }
@@ -41,15 +41,25 @@ public class UserView {
         switch (choice) {
             case 1:
 
+                System.out.println("Indtast dit kursus ID, fra listen.");
+                System.out.println("BALJO1001U_XJA_E16");
+                System.out.println("BBLCO1242U_XA_E16");
+                String courseCode = new Scanner(System.in).next();
 
+                //Eks: BALJO1001U_XJA_E16
 
-                service.getAll("BALJO1001U_XJA_E16", new ResponseCallback<ArrayList<Lecture>>() {
+                service.getAll(courseCode, new ResponseCallback<ArrayList<Lecture>>() {
 
                     public void success(ArrayList<Lecture> data) {
                         System.out.println("win");
 
-                        for (Lecture lecture:data) {
-                            System.out.println("Test" + lecture.getDescription());
+                        for (Lecture lecture : data) {
+
+                            System.out.println("Fag: " + lecture.getDescription());
+                            System.out.println("Type: " + lecture.getType());
+                            System.out.println("Start tidspunkt " + lecture.getStartDate());
+                            System.out.println("Slut tidspunkt " + lecture.getEndDate());
+
                             userMenu();
                         }
 
@@ -69,25 +79,23 @@ public class UserView {
 
                 int userID = user.getId();
 
-           service.findById(userID, new ResponseCallback<ArrayList<Course>>() {
-               public void success(ArrayList<Course> data) {
+                service.findById(userID, new ResponseCallback<ArrayList<Course>>() {
+                    public void success(ArrayList<Course> data) {
 
-                   for(Course course:data){
+                        for (Course course : data) {
 
-                       System.out.println("Displaytext: " + course.getDisplaytext());
-                       System.out.println("");
-                       System.out.println("Lecture name: " + course.getCode());
-
-
+                            System.out.println("Displaytext: " + course.getDisplaytext());
+                            System.out.println("");
+                            System.out.println("Lecture name: " + course.getCode());
 
 
-                   }
-               }
+                        }
+                    }
 
-               public void error(int status) {
-                   System.out.println(status);
-               }
-           });
+                    public void error(int status) {
+                        System.out.println(status);
+                    }
+                });
 
                 userMenu();
 
@@ -134,18 +142,36 @@ public class UserView {
                 break;
 
             case 4:
+                Scanner inputReader2 = new Scanner(System.in);
+
+                System.out.println("Type in the ID of the Review, you wish to view.");
+                int ReviewID = inputReader2.nextInt();
+
+
+                service.getAllReviews(ReviewID, new ResponseCallback<ArrayList<Review>>() {
+                    public void success(ArrayList<Review> data) {
+                        for (Review reviews : data) {
+                            System.out.println("Comment:  " + reviews.getComment());
+                        }
+                    }
+
+                    public void error(int status) {
+
+                    }
+                });
 
 
 
 
-            case 6:
-                LoginService.clear();
-                MainMenuView mainMenuView = new MainMenuView(viewHandler, service);
+        case 6:
+        LoginService.clear();
+        MainMenuView mainMenuView = new MainMenuView(viewHandler, service);
 
-            default:
-                System.out.println("Default");
-                userMenu();
-                break;
+        default:
+        System.out.println("Default");
+        userMenu();
+        break;
+
         }
     }
 

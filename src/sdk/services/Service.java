@@ -33,7 +33,7 @@ public class Service {
 
     /**
      *
-     * Følgende metode opdatere en bog ud fra et ID.
+     *
      *
      * OBS: brug StringEntity, når du skal ind og "Indsætte" data - eks create, update.
      *
@@ -43,17 +43,16 @@ public class Service {
      */
 
 
-    public void update(String id, Lecture lecture, final ResponseCallback<Lecture> responseCallback){
+    public void updateReview(String id, Review review, final ResponseCallback<Review> responseCallback){
 
         try {
-        HttpPut updateRequest = new HttpPut(ConnectionImpl.serverURL + "/Lecture/" + id);
+        HttpPut updateRequest = new HttpPut(ConnectionImpl.serverURL + "/review/" + id);
 
         updateRequest.addHeader("Content-Type", "application/json");
-       // updateRequest.addHeader("authorization", "NTxX4aHJ974xlJY6N3xFJXBB1gG7w8G8u8C20IFwp5Qvd4v1kHWf9PjBb1bc5Ei8");
 
 
-            StringEntity jsonBook = new StringEntity(gson.toJson(lecture));
-            updateRequest.setEntity(jsonBook);
+           // StringEntity lecture = new StringEntity(gson.toJson(lecture));
+           // updateRequest.setEntity(lecture);
 
 
 
@@ -62,8 +61,8 @@ public class Service {
 
             public void payload(String json) {
 
-                Lecture updatedLecture = gson.fromJson(json, Lecture.class);
-                responseCallback.success(updatedLecture);
+                Review updatedReview = gson.fromJson(json, Review.class);
+                responseCallback.success(updatedReview);
 
 
             }
@@ -74,7 +73,7 @@ public class Service {
 
 
         });
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -82,24 +81,21 @@ public class Service {
     }
 
 
-    public void delete(String id, final ResponseCallback<Integer> responsecallback) {
+    public void deleteReview(int id, final ResponseCallback<Boolean> responsecallback) {
 
-        /*
-        Skal huske ID med i argumentet(I path /books/id -
-         */
-        HttpDelete deleteRequest = new HttpDelete(ConnectionImpl.serverURL + "/books/" + id);
+        HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/review/" + id);
 
         //ud fra headeren, bliver den bedt om at authorize med en token.
-        deleteRequest.addHeader("Content-Type", "application/json");
+        putRequest.addHeader("Content-Type", "application/json");
 
 
 
         //Bruger execute metoden, til at tage vores Http-request og parse den til serveren.
-          connectionImpl.execute(deleteRequest, new ResponseParser() {
+          connectionImpl.execute(putRequest, new ResponseParser() {
 
               public void payload(String json) {
-                  Delete delete = gson.fromJson(json, Delete.class);
-                  responsecallback.success(delete.getCount());
+                  boolean isDeleted  = gson.fromJson(json, Boolean.class);
+                  responsecallback.success(isDeleted);
 
               }
 
@@ -112,7 +108,6 @@ public class Service {
     }
 
     /**
-     *  Følgende metode opretter bøger, ved hjælp af Entity metoden.
      * @param lecture
      * @param responseCallback
      */
@@ -293,7 +288,6 @@ public class Service {
 
         this.connectionImpl.execute(getRequest, new ResponseParser() {
             public void payload(String json) {
-                System.out.println("Payload initialized");
 
                 ArrayList<Course> courses = gson.fromJson(json, new TypeToken<ArrayList<Course>>(){}.getType());
 
