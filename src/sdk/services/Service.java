@@ -1,7 +1,9 @@
 package sdk.services;
 
+import Encrypter.Digester;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -14,6 +16,8 @@ import sdk.models.*;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
+import static sun.plugin2.util.PojoUtil.toJson;
 
 /**
  * Created by sorenkolbyejensen on 14/11/2016.
@@ -38,7 +42,6 @@ public class Service {
      * OBS: brug StringEntity, når du skal ind og "Indsætte" data - eks create, update.
      *
      * @param id
-     * @param lecture
      * @param responseCallback
      */
 
@@ -251,12 +254,16 @@ public class Service {
         userInfo.setPassword(password);
 
         try {
+
             StringEntity loginInfo = new StringEntity(this.gson.toJson(userInfo));
             postRequest.setEntity(loginInfo);
+
+
             postRequest.setHeader("Content-Type", "application/json");
 
             this.connectionImpl.execute(postRequest, new ResponseParser() {
                 public void payload(String json) {
+
                     User userToken = gson.fromJson(json, User.class);
 
                     LoginService.setAccessToken(userToken);

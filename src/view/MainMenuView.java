@@ -3,13 +3,9 @@ package view;
 import Encrypter.Digester;
 import controller.ViewHandler;
 import sdk.connection.ResponseCallback;
-import sdk.models.Lecture;
 import sdk.models.User;
 import sdk.services.Service;
 
-import javax.swing.text.View;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -20,7 +16,7 @@ public class MainMenuView {
 
         private Service service;
         private ViewHandler viewHandler;
-        public TestView testView;
+        public AdminView adminView;
         public UserView userView;
 
 
@@ -68,11 +64,38 @@ public class MainMenuView {
                             public void success(User data) {
 
                                 if (data != null) {
-                                    user.setCbsMail(data.getCbsMail());
-                                    user.setType(data.getType());
+                                    System.out.println("User type: " + data.getType());
+                                    if (data.getType().equals("student") ) {
+                                        System.out.println("Loading User menu");
 
-                                    UserView userview = new UserView(viewHandler, service, data);
-                                    userview.userMenu();
+                                        try {
+                                            Thread.sleep(2000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        user.setCbsMail(data.getCbsMail());
+                                        user.setType(data.getType());
+
+                                        UserView userview = new UserView(viewHandler, service, data);
+                                        userview.userMenu();
+                                    } else if (data.getType().equals("admin")) {
+                                        System.out.println("Loading Admin User" + user.getType());
+
+                                        try {
+                                            Thread.sleep(2000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        user.setCbsMail(data.getCbsMail());
+                                        user.setType(data.getType());
+
+                                        AdminView testview = new AdminView(viewHandler, service);
+                                        testview.TestMenu();
+                                    }
+
+
                                 }else {
                                     System.out.println("forkert login");
                                     MainMenu();

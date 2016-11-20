@@ -1,11 +1,8 @@
 package controller;
 
-import sdk.services.Service;
-import view.TestView;
+import view.AdminView;
 import view.MainMenuView;
 import view.UserView;
-
-import javax.swing.text.View;
 
 /**
  * Created by sorenkolbyejensen on 15/11/2016.
@@ -14,7 +11,7 @@ public class ViewHandler {
 
 
         private MainMenuView mainMenuView;
-        private TestView testView;
+        private AdminView adminView;
         private UserView userView;
 
         public ViewHandler(){
@@ -38,8 +35,8 @@ public class ViewHandler {
             return mainMenuView;
         }
 
-        public TestView getTestView() {
-            return testView;
+        public AdminView getAdminView() {
+            return adminView;
         }
 
         public UserView getUserView() {

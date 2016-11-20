@@ -9,14 +9,14 @@ import java.util.Scanner;
 /**
  * Created by sorenkolbyejensen on 15/11/2016.
  */
-public class TestView {
+public class AdminView {
 
 
     private ViewHandler viewHandler;
     private Service service;
     private Scanner inputReader;
 
-    public TestView(ViewHandler viewHandler, Service service) {
+    public AdminView(ViewHandler viewHandler, Service service) {
         this.viewHandler = viewHandler;
         this.service = service;
 

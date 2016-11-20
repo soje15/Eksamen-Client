@@ -75,10 +75,10 @@ public class Digester {
     }
 
     public static String decrypt(String s) {
-
+        String Encryption = "TRUE";
         String decrypted_string = s;
 
-        if("TRUE".equals("TRUE")) {
+        if(Encryption.equals("TRUE")) {
             decrypted_string = new String(xorWithKey(base64Decode(s), KEY.getBytes()));
         }
         return decrypted_string;

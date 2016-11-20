@@ -48,20 +48,23 @@ public class UserView {
 
                 //Eks: BALJO1001U_XJA_E16
 
+
                 service.getAll(courseCode, new ResponseCallback<ArrayList<Lecture>>() {
 
+
                     public void success(ArrayList<Lecture> data) {
-                        System.out.println("win");
+                            System.out.println("win");
 
-                        for (Lecture lecture : data) {
+                            for (Lecture lecture : data) {
 
-                            System.out.println("Fag: " + lecture.getDescription());
-                            System.out.println("Type: " + lecture.getType());
-                            System.out.println("Start tidspunkt " + lecture.getStartDate());
-                            System.out.println("Slut tidspunkt " + lecture.getEndDate());
+                                System.out.println("Fag: " + lecture.getDescription());
+                                System.out.println("Type: " + lecture.getType());
+                                System.out.println("Start tidspunkt " + lecture.getStartDate());
+                                System.out.println("Slut tidspunkt " + lecture.getEndDate());
 
-                            userMenu();
-                        }
+                                userMenu();
+                            }
+
 
 
                     }
@@ -165,6 +168,7 @@ public class UserView {
 
         case 6:
         LoginService.clear();
+            user = null;
         MainMenuView mainMenuView = new MainMenuView(viewHandler, service);
 
         default:
