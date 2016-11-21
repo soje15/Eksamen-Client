@@ -6,6 +6,7 @@ import sdk.connection.ResponseCallback;
 import sdk.models.User;
 import sdk.services.Service;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -34,8 +35,10 @@ public class MainMenuView {
             System.out.println("(1) - Log in");
             System.out.println("(5) - Shut down");
 
+        try {
             Scanner inputReader = new Scanner(System.in);
             int choice = inputReader.nextInt();
+
 
             switch (choice) {
 
@@ -123,8 +126,13 @@ public class MainMenuView {
                     System.out.println("Default case");
                    MainMenu();
                     break;
-            }
+            }        }catch  (InputMismatchException e) {
+            System.out.println();
+            System.out.println("indtast venligst et gyldigt tal");
+            System.out.println();
         }
+
+    }
 
 
     }

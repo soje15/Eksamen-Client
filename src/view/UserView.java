@@ -7,6 +7,7 @@ import sdk.services.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -36,66 +37,66 @@ public class UserView {
         System.out.println("(4) - Show all reviews");
         System.out.println("(6) - Log out");
         System.out.println();
+        try {
 
-        int choice = new Scanner(System.in).nextInt();
+            int choice = new Scanner(System.in).nextInt();
 
-        switch (choice) {
-            case 1:
-                service.findById(user.getId(), new ResponseCallback<ArrayList<Course>>() {
+            switch (choice) {
+                case 1:
+                    service.findById(user.getId(), new ResponseCallback<ArrayList<Course>>() {
 
-                    public void success(ArrayList<Course> data) {
+                        public void success(ArrayList<Course> data) {
 
-                        ArrayList<Course> courseArrayList = new ArrayList<Course>();
-
-
-                        for (Course course : data) {
-                            Course courses = new Course();
-
-                            courses.setDisplaytext(course.getDisplaytext());
-
-                            System.out.println(course.getDisplaytext());
-                            courseArrayList.add(courses);
+                            ArrayList<Course> courseArrayList = new ArrayList<Course>();
 
 
-                        }
+                            for (Course course : data) {
+                                Course courses = new Course();
 
-                        for (Course courseslist: courseArrayList) {
+                                courses.setDisplaytext(course.getDisplaytext());
+
+                                System.out.println(course.getDisplaytext());
+                                courseArrayList.add(courses);
 
 
-                            service.getAll(courseslist.getDisplaytext(), new ResponseCallback<ArrayList<Lecture>>() {
-                                public void success(ArrayList<Lecture> data) {
+                            }
 
-                                    for (Lecture lecture : data) {
-                                        System.out.println();
-                                        System.out.println("Fag: " + lecture.getDescription());
-                                        System.out.println("Type: " + lecture.getType());
-                                        System.out.println("Start tidspunkt " + lecture.getStartDate());
-                                        System.out.println("Slut tidspunkt " + lecture.getEndDate());
-                                        System.out.println();
+                            for (Course courseslist : courseArrayList) {
+
+
+                                service.getAll(courseslist.getDisplaytext(), new ResponseCallback<ArrayList<Lecture>>() {
+                                    public void success(ArrayList<Lecture> data) {
+
+                                        for (Lecture lecture : data) {
+                                            System.out.println();
+                                            System.out.println("Fag: " + lecture.getDescription());
+                                            System.out.println("Type: " + lecture.getType());
+                                            System.out.println("Start tidspunkt " + lecture.getStartDate());
+                                            System.out.println("Slut tidspunkt " + lecture.getEndDate());
+                                            System.out.println();
+                                        }
+
+
                                     }
 
 
+                                    public void error(int status) {
+                                        System.out.println(status);
 
-                                }
+                                    }
 
-
-                                public void error(int status) {
-
-                                }
-
-                            });
+                                });
+                            }
                         }
-                    }
 
-                    public void error(int status) {
+                        public void error(int status) {
 
-                    }
-
+                        }
 
 
-                });
-
-                userMenu();
+                    });
+                    System.out.println();
+                    userMenu();
                 /*
 
                 System.out.println("Indtast dit kursus ID, fra listen.");
@@ -132,127 +133,128 @@ public class UserView {
                 */
 
 
-                break;
+                    break;
 
-            case 2:
+                case 2:
 
-                int userID = user.getId();
+                    int userID = user.getId();
 
-                service.findById(userID, new ResponseCallback<ArrayList<Course>>() {
-                    public void success(ArrayList<Course> data) {
+                    service.findById(userID, new ResponseCallback<ArrayList<Course>>() {
+                        public void success(ArrayList<Course> data) {
 
-                        for (Course course : data) {
+                            for (Course course : data) {
 
-                            System.out.println("Displaytext: " + course.getDisplaytext());
-                            System.out.println("course ID " + course.getId());
-                            System.out.println("Lecture name: " + course.getCode());
+                                System.out.println("Displaytext: " + course.getDisplaytext());
+                                System.out.println("course ID " + course.getId());
+                                System.out.println("Lecture name: " + course.getCode());
+
+
+                            }
 
 
                         }
 
-                        userMenu();
-                    }
-
-                    public void error(int status) {
-                        System.out.println(status);
-                    }
-                });
-
+                        public void error(int status) {
+                            System.out.println(status);
+                        }
+                    });
+                    System.out.println();
+                    userMenu();
 
 
+                    break;
 
-                break;
+                case 3:
+                    Review review = new Review();
+                    Scanner inputReader = new Scanner(System.in);
 
-            case 3:
-                Review review = new Review();
-                Scanner inputReader = new Scanner(System.in);
+                    System.out.println("Type in a Review ID");
+                    final int reviewID = inputReader.nextInt();
+                    review.setId(reviewID);
 
-                System.out.println("Type in a Review ID");
-                final int reviewID = inputReader.nextInt();
-                review.setId(reviewID);
+                    System.out.println("Type in a lecture ID");
+                    int lectureID = inputReader.nextInt();
 
-                System.out.println("Type in a lecture ID");
-                int lectureID = inputReader.nextInt();
+                    review.setLectureId(lectureID);
 
-                review.setLectureId(lectureID);
-
-                review.setUserId(user.getId());
-
-
-                System.out.println("Type in your rating (1-5 points)");
-                int rating = inputReader.nextInt();
-
-                review.setRating(rating);
-
-                System.out.println("Type in a comment");
-
-                String reviewComment = inputReader.nextLine();
-
-                String name = inputReader.nextLine();
+                    review.setUserId(user.getId());
 
 
-                review.setComment(name);
+                    System.out.println("Type in your rating (1-5 points)");
+                    int rating = inputReader.nextInt();
+
+                    review.setRating(rating);
+
+                    System.out.println("Type in a comment");
+
+                    String reviewComment = inputReader.nextLine();
+
+                    String name = inputReader.nextLine();
 
 
-
-                service.addReview(review, new ResponseCallback<String>() {
-
-                    public void success(String data) {
-                        System.out.println("Review succesfully added");
-                        userMenu();
-                    }
-
-                    public void error(int status) {
-                        System.out.println(status);
-                    }
-                });
+                    review.setComment(name);
 
 
-                break;
+                    service.addReview(review, new ResponseCallback<String>() {
 
-            case 4:
-                Scanner inputReader2 = new Scanner(System.in);
+                        public void success(String data) {
+                            System.out.println("Review succesfully added");
+                            userMenu();
+                        }
 
-                System.out.println("Type in the ID of the Review, you wish to view.");
-                int ReviewID = inputReader2.nextInt();
+                        public void error(int status) {
+                            System.out.println(status);
+                        }
+                    });
 
 
-                service.getAllReviews(ReviewID, new ResponseCallback<ArrayList<Review>>() {
-                    public void success(ArrayList<Review> data) {
-                        for (Review reviews : data) {
-                            System.out.println();
-                            System.out.println("Comment: " + reviews.getComment());
-                            System.out.println("Lecture ID: " + reviews.getLectureId());
-                            System.out.println("Rating: " + reviews.getRating());
-                            System.out.println();
+                    break;
+
+                case 4:
+                    Scanner inputReader2 = new Scanner(System.in);
+
+                    System.out.println("Type in the ID of the Review, you wish to view.");
+                    int ReviewID = inputReader2.nextInt();
+
+
+                    service.getAllReviews(ReviewID, new ResponseCallback<ArrayList<Review>>() {
+                        public void success(ArrayList<Review> data) {
+                            for (Review reviews : data) {
+                                System.out.println();
+                                System.out.println("Comment: " + reviews.getComment());
+                                System.out.println("Lecture ID: " + reviews.getLectureId());
+                                System.out.println("Rating: " + reviews.getRating());
+                                System.out.println();
+
+                            }
 
                         }
-                        userMenu();
-                    }
 
-                    public void error(int status) {
+                        public void error(int status) {
 
-                    }
-                });
-
-
+                        }
+                    });
+                    System.out.println();
+                    userMenu();
 
 
-        case 6:
-        LoginService.clear();
-            user = null;
-        MainMenuView mainMenuView = new MainMenuView(viewHandler, service);
+                case 6:
+                    LoginService.clear();
+                    user = null;
+                    MainMenuView mainMenuView = new MainMenuView(viewHandler, service);
 
-        default:
-        System.out.println("Default");
-        userMenu();
-        break;
+                default:
+                    System.out.println("Default");
+                    userMenu();
+                    break;
 
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("indtast venligst et gyldigt tal");
+            userMenu();
         }
+
+
     }
-
-
-
-
 }
 
