@@ -264,7 +264,7 @@ public class Service {
 
                     User userToken = gson.fromJson(json, User.class);
 
-                    LoginToken.setAccessToken(userToken);
+                   // LoginToken.setAccessToken(userToken);
 
 
                     responseCallback.success(userToken);

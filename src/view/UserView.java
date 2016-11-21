@@ -1,7 +1,6 @@
 package view;
 import sdk.connection.ResponseCallback;
 import sdk.models.*;
-import sdk.models.LoginToken;
 import sdk.services.Service;
 
 import java.util.ArrayList;
@@ -235,7 +234,6 @@ public class UserView {
 
 
                 case 6:
-                    LoginToken.clear();
                     user = null;
                     MainMenuView mainMenuView = new MainMenuView(service);
 
