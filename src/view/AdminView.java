@@ -1,6 +1,7 @@
 package view;
 
 import controller.ViewHandler;
+import sdk.models.AccessToken;
 import sdk.services.Service;
 
 import java.util.Scanner;
@@ -25,12 +26,18 @@ public class AdminView {
 
  public static void TestMenu(){
 
-     System.out.println("loaded");
+     System.out.println("====== ADMIN MENU =======");
+     System.out.println("");
+     System.out.println("(1) - Delete any review");
+     System.out.println("(4) - log out");
+
         int choice = new Scanner(System.in).nextInt();
 
         switch (choice) {
             case 1:
+                System.out.println("Delete review here");
 
+                TestMenu();
                 break;
 
             case 2:
@@ -46,6 +53,7 @@ public class AdminView {
 
             case 4:
                 // this.viewHandler.showMainMenu();
+                System.exit(0);
                 break;
 
             default:

@@ -10,6 +10,7 @@ public class LoginService {
 
     private static User loginToken;
 
+
     public static void setAccessToken(User token){
         loginToken = token;
     }

@@ -5,6 +5,7 @@ import sdk.models.*;
 import sdk.services.LoginService;
 import sdk.services.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -53,18 +54,16 @@ public class UserView {
 
 
                     public void success(ArrayList<Lecture> data) {
-                            System.out.println("win");
 
                             for (Lecture lecture : data) {
-
+                                System.out.println();
                                 System.out.println("Fag: " + lecture.getDescription());
                                 System.out.println("Type: " + lecture.getType());
                                 System.out.println("Start tidspunkt " + lecture.getStartDate());
                                 System.out.println("Slut tidspunkt " + lecture.getEndDate());
-
-                                userMenu();
+                                System.out.println();
                             }
-
+                        userMenu();
 
 
                     }
@@ -91,7 +90,7 @@ public class UserView {
                             System.out.println("");
                             System.out.println("Lecture name: " + course.getCode());
 
-
+                            userMenu();
                         }
                     }
 
@@ -100,7 +99,7 @@ public class UserView {
                     }
                 });
 
-                userMenu();
+
 
 
                 break;
@@ -127,11 +126,19 @@ public class UserView {
                 review.setRating(rating);
 
                 System.out.println("Type in a comment");
-                String reviewComment = inputReader.next();
-                review.setComment(reviewComment);
 
-                service.addReview(review, new ResponseCallback<Review>() {
-                    public void success(Review data) {
+                String reviewComment = inputReader.nextLine();
+
+                String name = inputReader.nextLine();
+
+
+                review.setComment(name);
+
+
+
+                service.addReview(review, new ResponseCallback<String>() {
+
+                    public void success(String data) {
                         System.out.println("Review succesfully added");
                         userMenu();
                     }
@@ -154,8 +161,14 @@ public class UserView {
                 service.getAllReviews(ReviewID, new ResponseCallback<ArrayList<Review>>() {
                     public void success(ArrayList<Review> data) {
                         for (Review reviews : data) {
-                            System.out.println("Comment:  " + reviews.getComment());
+                            System.out.println();
+                            System.out.println("Comment: " + reviews.getComment());
+                            System.out.println("Lecture ID: " + reviews.getLectureId());
+                            System.out.println("Rating: " + reviews.getRating());
+                            System.out.println();
+
                         }
+                        userMenu();
                     }
 
                     public void error(int status) {
@@ -178,8 +191,6 @@ public class UserView {
 
         }
     }
-
-
 
 
 

@@ -16,7 +16,6 @@ public class ViewHandler {
 
         public ViewHandler(){
 
-
         }
 
         public Object changeView(Object view){

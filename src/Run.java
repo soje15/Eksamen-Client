@@ -21,19 +21,20 @@ public class Run {
     public static void main(String[] args) {
         Service service = new Service();
         Review review = new Review();
+        User user = new User();
 
-        review.setId(3);
+        user.setId(2);
+
+        review.setId(10);
         String ID = "17";
 
-service.updateReview(ID, review, new ResponseCallback<Review>() {
-    public void success(Review data) {
-
-        data.getComment();
-
+service.deleteReview(review.getId(), user.getId(), new ResponseCallback<Boolean>() {
+    public void success(Boolean data) {
+        System.out.println(data);
     }
 
     public void error(int status) {
-
+        System.out.println(status);
     }
 });
     }

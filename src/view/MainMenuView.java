@@ -42,7 +42,7 @@ public class MainMenuView {
                 case 1:
 
                     final User user = new User();
-                    Scanner inputReaderUsername = new Scanner(System.in);
+                    //Scanner inputReaderUsername = new Scanner(System.in);
 
                     System.out.println("Type in your CBS mail");
                     final String username = inputReader.next();
@@ -55,7 +55,7 @@ public class MainMenuView {
                     String hashedPassword = Digester.hashWithSalt(password);
                     String doubleHashed = Digester.hashWithSalt(hashedPassword);
 
-                    System.out.println(doubleHashed);
+                    //System.out.println(doubleHashed);
 
 
                     try {

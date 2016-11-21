@@ -13,6 +13,7 @@ import sdk.connection.ConnectionImpl;
 import sdk.connection.ResponseCallback;
 import sdk.connection.ResponseParser;
 import sdk.models.*;
+import view.UserView;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -77,16 +78,16 @@ public class Service {
 
         });
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
 
 
     }
 
 
-    public void deleteReview(int id, final ResponseCallback<Boolean> responsecallback) {
+    public void deleteReview(int userid, int reviewID, final ResponseCallback<Boolean> responsecallback) {
 
-        HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/review/" + id);
+        HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/review/" + userid + reviewID);
 
         //ud fra headeren, bliver den bedt om at authorize med en token.
         putRequest.addHeader("Content-Type", "application/json");
@@ -148,9 +149,10 @@ public class Service {
     }
 
 
-    public void addReview(Review review, final ResponseCallback<Review> responseCallback) {
+    public void addReview(Review review, final ResponseCallback<String> responseCallback) {
 
         try {
+
             HttpPost postRequest = new HttpPost(ConnectionImpl.serverURL + "/student/review");
 
             postRequest.addHeader("Content-Type", "application/json");
@@ -163,8 +165,8 @@ public class Service {
 
                 public void payload(String json) {
 
-                   Review newReview = gson.fromJson(json, Review.class);
-                    responseCallback.success(newReview);
+                   String isAdded = gson.fromJson(json, String.class);
+                    responseCallback.success(isAdded);
 
 
                 }
@@ -258,11 +260,12 @@ public class Service {
             StringEntity loginInfo = new StringEntity(this.gson.toJson(userInfo));
             postRequest.setEntity(loginInfo);
 
-
             postRequest.setHeader("Content-Type", "application/json");
 
             this.connectionImpl.execute(postRequest, new ResponseParser() {
                 public void payload(String json) {
+                    //String decryptedjson = Digester.decrypt(json);
+
 
                     User userToken = gson.fromJson(json, User.class);
 
@@ -278,7 +281,7 @@ public class Service {
 
                 }
             });
-        }catch (UnsupportedEncodingException e){
+        }catch (Exception e){
             e.printStackTrace();
         }
 
