@@ -41,6 +41,54 @@ public class UserView {
 
         switch (choice) {
             case 1:
+                service.findById(user.getId(), new ResponseCallback<ArrayList<Course>>() {
+
+                    public void success(ArrayList<Course> data) {
+                        Course courses = new Course();
+
+
+                        for (Course course : data) {
+
+
+                            courses.setDisplaytext(course.getDisplaytext());
+
+
+
+                        }
+
+                        service.getAll(courses.getDisplaytext(), new ResponseCallback<ArrayList<Lecture>>() {
+                            public void success(ArrayList<Lecture> data) {
+
+                                for (Lecture lecture : data) {
+                                    System.out.println();
+                                    System.out.println("Fag: " + lecture.getDescription());
+                                    System.out.println("Type: " + lecture.getType());
+                                    System.out.println("Start tidspunkt " + lecture.getStartDate());
+                                    System.out.println("Slut tidspunkt " + lecture.getEndDate());
+                                    System.out.println();
+                                }
+                                userMenu();
+
+
+                            }
+
+                            public void error(int status) {
+
+                            }
+                        });
+
+                    }
+
+                    public void error(int status) {
+
+                    }
+
+
+
+                });
+
+
+                /*
 
                 System.out.println("Indtast dit kursus ID, fra listen.");
                 System.out.println("BALJO1001U_XJA_E16");
@@ -73,6 +121,7 @@ public class UserView {
                         System.exit(0);
                     }
                 });
+                */
 
 
                 break;
@@ -87,11 +136,13 @@ public class UserView {
                         for (Course course : data) {
 
                             System.out.println("Displaytext: " + course.getDisplaytext());
-                            System.out.println("");
+                            System.out.println("course ID " + course.getId());
                             System.out.println("Lecture name: " + course.getCode());
 
-                            userMenu();
+
                         }
+
+                        userMenu();
                     }
 
                     public void error(int status) {

@@ -47,16 +47,17 @@ public class Service {
      */
 
 
-    public void updateReview(String id, Review review, final ResponseCallback<Review> responseCallback){
+    public void updateReview(Review review, final ResponseCallback<Review> responseCallback){
 
         try {
-        HttpPut updateRequest = new HttpPut(ConnectionImpl.serverURL + "/review/" + id);
+        HttpPut updateRequest = new HttpPut(ConnectionImpl.serverURL + "/review/" + review.getId());
+            System.out.println(connectionImpl.serverURL + "/review/" + review.getId() + review.getUserId());
 
         updateRequest.addHeader("Content-Type", "application/json");
 
 
-           // StringEntity lecture = new StringEntity(gson.toJson(lecture));
-           // updateRequest.setEntity(lecture);
+           StringEntity jsonReviews = new StringEntity(gson.toJson(review));
+            updateRequest.setEntity(jsonReviews);
 
 
 
@@ -123,8 +124,8 @@ public class Service {
             postRequest.addHeader("Content-Type", "application/json");
 
 
-            StringEntity jsonBook = new StringEntity(gson.toJson(lecture));
-            postRequest.setEntity(jsonBook);
+            StringEntity jsonLecture = new StringEntity(gson.toJson(lecture));
+            postRequest.setEntity(jsonLecture);
 
             connectionImpl.execute(postRequest, new ResponseParser() {
 

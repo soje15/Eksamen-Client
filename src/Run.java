@@ -26,17 +26,19 @@ public class Run {
         user.setId(2);
 
         review.setId(10);
+        review.setUserId(2);
         String ID = "17";
 
-service.deleteReview(review.getId(), user.getId(), new ResponseCallback<Boolean>() {
-    public void success(Boolean data) {
-        System.out.println(data);
-    }
+        service.updateReview(review, new ResponseCallback<Review>() {
+            public void success(Review data) {
+                System.out.println(data);
+            }
 
-    public void error(int status) {
-        System.out.println(status);
-    }
-});
+            public void error(int status) {
+                System.out.println(status);
+
+            }
+        });
     }
     /*
     public static void main(String[] args) {
