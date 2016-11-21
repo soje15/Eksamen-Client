@@ -1,10 +1,7 @@
 package sdk.services;
 
-import Encrypter.Digester;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -13,12 +10,9 @@ import sdk.connection.ConnectionImpl;
 import sdk.connection.ResponseCallback;
 import sdk.connection.ResponseParser;
 import sdk.models.*;
-import view.UserView;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-
-import static sun.plugin2.util.PojoUtil.toJson;
 
 /**
  * Created by sorenkolbyejensen on 14/11/2016.
@@ -270,7 +264,7 @@ public class Service {
 
                     User userToken = gson.fromJson(json, User.class);
 
-                    LoginService.setAccessToken(userToken);
+                    LoginToken.setAccessToken(userToken);
 
 
                     responseCallback.success(userToken);

@@ -1,11 +1,9 @@
 package view;
-import controller.ViewHandler;
 import sdk.connection.ResponseCallback;
 import sdk.models.*;
-import sdk.services.LoginService;
+import sdk.models.LoginToken;
 import sdk.services.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -15,13 +13,11 @@ import java.util.Scanner;
  */
 public class UserView {
 
-    private ViewHandler viewHandler;
     private Service service;
     private Scanner inputReader;
     private User user;
 
-    public UserView(ViewHandler viewHandler, Service service, User user) {
-        this.viewHandler = viewHandler;
+    public UserView(Service service, User user) {
         this.service = service;
         this.user = user;
 
@@ -239,9 +235,9 @@ public class UserView {
 
 
                 case 6:
-                    LoginService.clear();
+                    LoginToken.clear();
                     user = null;
-                    MainMenuView mainMenuView = new MainMenuView(viewHandler, service);
+                    MainMenuView mainMenuView = new MainMenuView(service);
 
                 default:
                     System.out.println("Default");

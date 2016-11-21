@@ -1,7 +1,6 @@
 package view;
 
 import Encrypter.Digester;
-import controller.ViewHandler;
 import sdk.connection.ResponseCallback;
 import sdk.models.User;
 import sdk.services.Service;
@@ -16,14 +15,12 @@ public class MainMenuView {
 
 
         private Service service;
-        private ViewHandler viewHandler;
         public AdminView adminView;
         public UserView userView;
 
 
 
-        public MainMenuView(ViewHandler viewHandler, Service service) {
-            this.viewHandler = viewHandler;
+        public MainMenuView(Service service) {
             this.service = service;
 
             MainMenu();
@@ -80,7 +77,7 @@ public class MainMenuView {
                                         user.setCbsMail(data.getCbsMail());
                                         user.setType(data.getType());
 
-                                        UserView userview = new UserView(viewHandler, service, data);
+                                        UserView userview = new UserView(service, data);
                                         userview.userMenu();
                                     } else if (data.getType().equals("admin")) {
                                         System.out.println("Loading Admin User" + user.getType());
@@ -94,7 +91,7 @@ public class MainMenuView {
                                         user.setCbsMail(data.getCbsMail());
                                         user.setType(data.getType());
 
-                                        AdminView testview = new AdminView(viewHandler, service);
+                                        AdminView testview = new AdminView(service);
                                         testview.TestMenu();
                                     }
 

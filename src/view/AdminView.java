@@ -1,7 +1,5 @@
 package view;
 
-import controller.ViewHandler;
-import sdk.models.AccessToken;
 import sdk.services.Service;
 
 import java.util.Scanner;
@@ -13,12 +11,10 @@ import java.util.Scanner;
 public class AdminView {
 
 
-    private ViewHandler viewHandler;
     private Service service;
     private Scanner inputReader;
 
-    public AdminView(ViewHandler viewHandler, Service service) {
-        this.viewHandler = viewHandler;
+    public AdminView(Service service) {
         this.service = service;
 
     }

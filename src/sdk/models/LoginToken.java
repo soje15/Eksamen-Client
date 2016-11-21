@@ -1,4 +1,4 @@
-package sdk.services;
+package sdk.models;
 
 /**
  * Created by sorenkolbyejensen on 18/11/2016.
@@ -6,7 +6,7 @@ package sdk.services;
 
 import sdk.models.User;
 
-public class LoginService {
+public class LoginToken {
 
     private static User loginToken;
 

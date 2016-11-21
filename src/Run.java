@@ -1,14 +1,7 @@
-import Encrypter.Digester;
-import configloader.ConfigLoader;
 import sdk.connection.ResponseCallback;
-import sdk.models.AccessToken;
-import sdk.models.Lecture;
 import sdk.models.Review;
 import sdk.models.User;
 import sdk.services.Service;
-
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 /**
  * Created by sorenkolbyejensen on 14/11/2016.
