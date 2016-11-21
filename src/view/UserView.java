@@ -44,39 +44,47 @@ public class UserView {
                 service.findById(user.getId(), new ResponseCallback<ArrayList<Course>>() {
 
                     public void success(ArrayList<Course> data) {
-                        Course courses = new Course();
+
+                        ArrayList<Course> courseArrayList = new ArrayList<Course>();
 
 
                         for (Course course : data) {
-
+                            Course courses = new Course();
 
                             courses.setDisplaytext(course.getDisplaytext());
 
+                            System.out.println(course.getDisplaytext());
+                            courseArrayList.add(courses);
 
 
                         }
 
-                        service.getAll(courses.getDisplaytext(), new ResponseCallback<ArrayList<Lecture>>() {
-                            public void success(ArrayList<Lecture> data) {
+                        for (Course courseslist: courseArrayList) {
 
-                                for (Lecture lecture : data) {
-                                    System.out.println();
-                                    System.out.println("Fag: " + lecture.getDescription());
-                                    System.out.println("Type: " + lecture.getType());
-                                    System.out.println("Start tidspunkt " + lecture.getStartDate());
-                                    System.out.println("Slut tidspunkt " + lecture.getEndDate());
-                                    System.out.println();
+
+                            service.getAll(courseslist.getDisplaytext(), new ResponseCallback<ArrayList<Lecture>>() {
+                                public void success(ArrayList<Lecture> data) {
+
+                                    for (Lecture lecture : data) {
+                                        System.out.println();
+                                        System.out.println("Fag: " + lecture.getDescription());
+                                        System.out.println("Type: " + lecture.getType());
+                                        System.out.println("Start tidspunkt " + lecture.getStartDate());
+                                        System.out.println("Slut tidspunkt " + lecture.getEndDate());
+                                        System.out.println();
+                                    }
+
+
+
                                 }
-                                userMenu();
 
 
-                            }
+                                public void error(int status) {
 
-                            public void error(int status) {
+                                }
 
-                            }
-                        });
-
+                            });
+                        }
                     }
 
                     public void error(int status) {
@@ -87,7 +95,7 @@ public class UserView {
 
                 });
 
-
+                userMenu();
                 /*
 
                 System.out.println("Indtast dit kursus ID, fra listen.");
