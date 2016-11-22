@@ -20,7 +20,7 @@ public class Run {
         review.setUserId(2);
         String ID = "17";
 
-      service.updateReview(review, new ResponseCallback<Boolean>() {
+      service.deleteReviewComment(review, new ResponseCallback<Boolean>() {
           public void success(Boolean data) {
               System.out.println(data);
           }

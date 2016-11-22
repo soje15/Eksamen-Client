@@ -34,7 +34,7 @@ public class ConnectionImpl {
 
 
 
-          //Execute metoden kigger på om status på serveren er mellem 200/300. Da alt under 400/500 betyder der skete en
+          //Execute metoden kigger på om status på serveren er mellem 200/300. Da alt over 400/500 betyder der skete en
           //Fejl i http protokollen.
         if (status >= 200 && status < 300) {
           System.out.println("Connected to " + serverURL);

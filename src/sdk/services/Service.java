@@ -43,6 +43,51 @@ public class Service {
      */
 
 
+    public void deleteReviewComment(Review review, final ResponseCallback<Boolean> responseCallback){
+
+        try {
+            HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/student/reviewcomment/");
+            System.out.println(connectionImpl.serverURL + "/student/review/" + review.getUserId() + review.getId());
+
+            putRequest.addHeader("Content-Type", "application/json");
+
+            StringEntity jsonReview = new StringEntity(gson.toJson(review));
+            putRequest.setEntity(jsonReview);
+
+            connectionImpl.execute(putRequest, new ResponseParser() {
+
+                public void payload(String json) {
+
+                    Boolean isDeleted = gson.fromJson(json, Boolean.class);
+
+                    System.out.println(isDeleted);
+
+                    responseCallback.success(isDeleted);
+
+
+                }
+
+                public void error(int status) {
+                    responseCallback.error(status);
+                }
+
+
+            });
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
     public void updateReview(Review review, final ResponseCallback<Boolean> responseCallback){
 
         try {
@@ -59,6 +104,9 @@ public class Service {
             public void payload(String json) {
 
                 Boolean isDeleted = gson.fromJson(json, Boolean.class);
+
+                System.out.println(isDeleted);
+
                 responseCallback.success(isDeleted);
 
 
@@ -82,7 +130,6 @@ public class Service {
 
         HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/review/" + userid + reviewID);
 
-        //ud fra headeren, bliver den bedt om at authorize med en token.
         putRequest.addHeader("Content-Type", "application/json");
 
 
