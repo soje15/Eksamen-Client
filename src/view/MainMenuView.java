@@ -91,7 +91,7 @@ public class MainMenuView {
                                         user.setCbsMail(data.getCbsMail());
                                         user.setType(data.getType());
 
-                                        AdminView testview = new AdminView(service);
+                                        AdminView testview = new AdminView(service, user);
                                         testview.TestMenu();
                                     }
 

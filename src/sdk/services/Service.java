@@ -46,21 +46,15 @@ public class Service {
     public void updateReview(Review review, final ResponseCallback<Boolean> responseCallback){
 
         try {
-        HttpPut deleteRequest = new HttpPut(ConnectionImpl.serverURL + "/student/review/");
+        HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/student/review/");
             System.out.println(connectionImpl.serverURL + "/student/review/" + review.getUserId() + review.getId());
 
-        deleteRequest.addHeader("Content-Type", "application/json");
+            putRequest.addHeader("Content-Type", "application/json");
 
             StringEntity jsonReview = new StringEntity(gson.toJson(review));
-            deleteRequest.setEntity(jsonReview);
+            putRequest.setEntity(jsonReview);
 
-
-
-
-
-
-
-        connectionImpl.execute(deleteRequest, new ResponseParser() {
+        connectionImpl.execute(putRequest, new ResponseParser() {
 
             public void payload(String json) {
 

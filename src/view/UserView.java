@@ -214,6 +214,8 @@ public class UserView {
                     service.getAllReviews(ReviewID, new ResponseCallback<ArrayList<Review>>() {
                         public void success(ArrayList<Review> data) {
                             for (Review reviews : data) {
+
+
                                 System.out.println();
                                 System.out.println("Comment: " + reviews.getComment());
                                 System.out.println("Lecture ID: " + reviews.getLectureId());
@@ -237,6 +239,7 @@ public class UserView {
                     Scanner inputReader2 = new Scanner(System.in);
                     Review deleteReview = new Review();
 
+                    System.out.println("Type in the ID of the review, you wish to delete:");
                     int deleteReviewID = inputReader2.nextInt();
 
                     deleteReview.setId(deleteReviewID);
@@ -244,6 +247,7 @@ public class UserView {
 
                     service.updateReview(deleteReview, new ResponseCallback<Boolean>() {
                         public void success(Boolean data) {
+                            System.out.println(data);
                             System.out.println("Review softdeleted");
                         }
 
