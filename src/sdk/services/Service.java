@@ -51,8 +51,8 @@ public class Service {
 
         deleteRequest.addHeader("Content-Type", "application/json");
 
-            StringEntity jsonLecture = new StringEntity(gson.toJson(review));
-            deleteRequest.setEntity(jsonLecture);
+            StringEntity jsonReview = new StringEntity(gson.toJson(review));
+            deleteRequest.setEntity(jsonReview);
 
 
 

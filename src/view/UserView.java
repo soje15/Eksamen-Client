@@ -30,6 +30,7 @@ public class UserView {
         System.out.println("(2) - Show attended courses");
         System.out.println("(3) - Add review to course");
         System.out.println("(4) - Show all reviews");
+        System.out.println("(5) - Delete review");
         System.out.println("(6) - Log out");
         System.out.println();
         try {
@@ -206,11 +207,9 @@ public class UserView {
                     break;
 
                 case 4:
-                    Scanner inputReader2 = new Scanner(System.in);
-
                     System.out.println("Type in the ID of the Review, you wish to view.");
-                    int ReviewID = inputReader2.nextInt();
-
+                   Scanner inputReader3 = new Scanner(System.in);
+                    int ReviewID = inputReader3.nextInt();
 
                     service.getAllReviews(ReviewID, new ResponseCallback<ArrayList<Review>>() {
                         public void success(ArrayList<Review> data) {
@@ -231,6 +230,32 @@ public class UserView {
                     });
                     System.out.println();
                     userMenu();
+
+                   break;
+
+                case 5:
+                    Scanner inputReader2 = new Scanner(System.in);
+                    Review deleteReview = new Review();
+
+                    int deleteReviewID = inputReader2.nextInt();
+
+                    deleteReview.setId(deleteReviewID);
+                    deleteReview.setUserId(user.getId());
+
+                    service.updateReview(deleteReview, new ResponseCallback<Boolean>() {
+                        public void success(Boolean data) {
+                            System.out.println("Review softdeleted");
+                        }
+
+                        public void error(int status) {
+                            System.out.println(status);
+
+                        }
+                    });
+
+
+
+                    break;
 
 
                 case 6:
