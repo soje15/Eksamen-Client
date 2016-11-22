@@ -7,7 +7,13 @@ import sun.misc.BASE64Encoder;
 import java.io.IOException;
 import java.security.MessageDigest;
 
-//TODO: Comments and documentation needed.
+
+
+/*
+
+Følgende klasse er udarbejdet i fællesskab i undervisnings-evaluerings gruppen.
+
+ */
 public class Digester {
 
     //TODO: Set SALT and KEY in config-file.

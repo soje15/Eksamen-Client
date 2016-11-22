@@ -10,7 +10,7 @@ import view.MainMenuView;
  DONE K03  : Klient skal kunne se andres kommentarer og bedømmelser
  DONE K04  : Klient skal kunne bedømme lektioner (Rating og evt. kommentere)
  DONE K05  : Klient skal kunne modtage lektioner fra serveren
- DONE K06  : Klient skal kunne se samlet deltagelse af lektion
+ UMULIGT MED NUVÆRENDE ENDPOINTS & DATABASE : Klient skal kunne se samlet deltagelse af lektion
  BRUG FOR HJÆLP K07 :  Klient skal kunne slette egen kommentar
  BRUG FOR HJÆLP K08  : Klient (admin-bruger) skal kunne slette kommentarer
  DONE K09 :  Klient skal stille et UI til rådighed for brugeren

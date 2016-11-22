@@ -2,6 +2,8 @@ package sdk.services;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -36,32 +38,34 @@ public class Service {
      *
      * OBS: brug StringEntity, når du skal ind og "Indsætte" data - eks create, update.
      *
-     * @param id
+     * @param
      * @param responseCallback
      */
 
 
-    public void updateReview(Review review, final ResponseCallback<Review> responseCallback){
+    public void updateReview(Review review, final ResponseCallback<Boolean> responseCallback){
 
         try {
-        HttpPut updateRequest = new HttpPut(ConnectionImpl.serverURL + "/review/" + review.getId());
-            System.out.println(connectionImpl.serverURL + "/review/" + review.getId() + review.getUserId());
+        HttpPut deleteRequest = new HttpPut(ConnectionImpl.serverURL + "/student/review/");
+            System.out.println(connectionImpl.serverURL + "/student/review/" + review.getUserId() + review.getId());
 
-        updateRequest.addHeader("Content-Type", "application/json");
+        deleteRequest.addHeader("Content-Type", "application/json");
 
-
-           StringEntity jsonReviews = new StringEntity(gson.toJson(review));
-            updateRequest.setEntity(jsonReviews);
-
+            StringEntity jsonLecture = new StringEntity(gson.toJson(review));
+            deleteRequest.setEntity(jsonLecture);
 
 
 
-        connectionImpl.execute(updateRequest, new ResponseParser() {
+
+
+
+
+        connectionImpl.execute(deleteRequest, new ResponseParser() {
 
             public void payload(String json) {
 
-                Review updatedReview = gson.fromJson(json, Review.class);
-                responseCallback.success(updatedReview);
+                Boolean isDeleted = gson.fromJson(json, Boolean.class);
+                responseCallback.success(isDeleted);
 
 
             }
@@ -86,6 +90,7 @@ public class Service {
 
         //ud fra headeren, bliver den bedt om at authorize med en token.
         putRequest.addHeader("Content-Type", "application/json");
+
 
 
 
