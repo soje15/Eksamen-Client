@@ -47,7 +47,7 @@ public class Service {
 
         try {
             HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/student/reviewcomment/");
-            System.out.println(connectionImpl.serverURL + "/student/review/" + review.getUserId() + review.getId());
+            System.out.println(connectionImpl.serverURL + "/student/review/" + review.getUserId() + review.getId());    //
 
             putRequest.addHeader("Content-Type", "application/json");
 

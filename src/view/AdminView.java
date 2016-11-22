@@ -30,7 +30,8 @@ public class AdminView {
      System.out.println("====== ADMIN MENU =======");
      System.out.println("");
      System.out.println("(1) - Delete any review");
-     System.out.println("(2) - log out");
+     System.out.println("(2) - Delete any review comment");
+     System.out.println("(3) - log out");
 
         int choice = new Scanner(System.in).nextInt();
 
@@ -68,6 +69,36 @@ public class AdminView {
                 break;
 
             case 2:
+
+                Scanner inputReader = new Scanner(System.in);
+
+                System.out.println("Type in the ID of the review");
+                int reviewID = inputReader.nextInt();
+
+                System.out.println("Type in the ID of the user");
+                int userReviewID = inputReader.nextInt();
+
+                Review deleteReviewComment = new Review();
+
+                deleteReviewComment.setId(reviewID);
+                deleteReviewComment.setUserId(userReviewID);
+
+                service.deleteReviewComment(deleteReviewComment, new ResponseCallback<Boolean>() {
+                    public void success(Boolean data) {
+                        System.out.println("Sucessfully deleted comment");
+                    }
+
+                    public void error(int status) {
+                        System.out.println("An error has occured: " + status);
+
+                    }
+                });
+
+
+                break;
+
+
+            case 3:
                 System.out.println();
                 user = null;
                 MainMenuView mainMenuView = new MainMenuView(service);

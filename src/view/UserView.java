@@ -31,7 +31,8 @@ public class UserView {
         System.out.println("(3) - Add review to course");
         System.out.println("(4) - Show all reviews");
         System.out.println("(5) - Delete review");
-        System.out.println("(6) - Log out");
+        System.out.println("(6) - Delete review comment");
+        System.out.println("(7) - log out");
         System.out.println();
         try {
 
@@ -261,10 +262,39 @@ public class UserView {
 
                     break;
 
-
                 case 6:
+                    Scanner inputReader4 = new Scanner(System.in);
+
+                    Review reviewcomment = new Review();
+
+                    System.out.println("Type in the ID of the review");
+                    int reviewsID = inputReader4.nextInt();
+
+                    reviewcomment.setUserId(user.getId());
+                    reviewcomment.setId(reviewsID);
+
+                     service.deleteReviewComment(reviewcomment, new ResponseCallback<Boolean>() {
+                         public void success(Boolean data) {
+                             System.out.println("Comment deleted");
+                         }
+
+                         public void error(int status) {
+
+                         }
+                     });
+
+                    userMenu();
+
+
+
+                    break;
+
+
+
+                case 7:
                     user = null;
                     MainMenuView mainMenuView = new MainMenuView(service);
+                    break;
 
                 default:
                     System.out.println("Default");
