@@ -18,11 +18,16 @@ public class MainMenuView {
         private Scanner inputReader;
 
 
+        protected String username;
+        protected String password;
 
 
-        public MainMenuView(Service service) {
+
+
+        public MainMenuView(Service service, Scanner inputReader) {
             this.service = service;
-            inputReader = new Scanner(System.in);
+            this.inputReader = inputReader;
+            //inputReader = new Scanner(System.in);
 
             MainMenu();
         }
@@ -45,11 +50,11 @@ public class MainMenuView {
 
 
                     System.out.println("Type in your CBS mail");
-                    final String username = inputReader.next();
+                    username = inputReader.next();
 
 
                     System.out.println("Type in your password");
-                    String password = inputReader.next();
+                    password = inputReader.next();
 
 
                     String hashedPassword = Digester.hashWithSalt(password);
@@ -77,7 +82,7 @@ public class MainMenuView {
                                         user.setCbsMail(data.getCbsMail());
                                         user.setType(data.getType());
 
-                                        UserView userView = new UserView(service, data);
+                                        UserView userView = new UserView(service, data, inputReader);
                                         userView.userMenu();
                                     } else if (data.getType().equals("admin")) {
                                         System.out.println("Loading Admin User" + user.getType());
@@ -91,7 +96,7 @@ public class MainMenuView {
                                         user.setCbsMail(data.getCbsMail());
                                         user.setType(data.getType());
 
-                                        AdminView testview = new AdminView(service, user);
+                                        AdminView testview = new AdminView(service, user, inputReader);
                                         testview.TestMenu();
                                     }
 

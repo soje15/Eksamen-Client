@@ -26,12 +26,10 @@ public class Problem2 {
     public static void main(String[] args) {
         ConfigLoader.parseConfig();
         Service service = new Service();
-        User user = new User();
 
-        AdminView adminView = new AdminView(service, user);
-        UserView userView = new UserView(service, user );
+        Scanner inputReader = new Scanner(System.in);
 
-        MainMenuView mainMenuView = new MainMenuView(service);
+        MainMenuView mainMenuView = new MainMenuView(service, inputReader);
         mainMenuView.MainMenu();
 
     }

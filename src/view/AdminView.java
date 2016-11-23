@@ -18,10 +18,11 @@ public class AdminView {
     private Scanner inputReader;
     private User user;
 
-    public AdminView(Service service, User user) {
+    public AdminView(Service service, User user, Scanner inputReader) {
         this.service = service;
         this.user = user;
-        inputReader = new Scanner(System.in);
+        this.inputReader = inputReader;
+     //   inputReader = new Scanner(System.in);
 
     }
 
@@ -101,8 +102,8 @@ public class AdminView {
             case 3:
                 System.out.println();
                 user = null;
-                MainMenuView mainMenuView = new MainMenuView(service);
-                mainMenuView.MainMenu();
+                //MainMenuView mainMenuView = new MainMenuView(service);
+               // mainMenuView.MainMenu();
                 break;
 
             default:

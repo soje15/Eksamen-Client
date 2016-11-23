@@ -16,10 +16,10 @@ public class UserView {
     private Scanner inputReader;
     private User user;
 
-    public UserView(Service service, User user) {
+    public UserView(Service service, User user, Scanner inputReader) {
         this.service = service;
         this.user = user;
-        inputReader = new Scanner(System.in);
+        this.inputReader = inputReader;
 
 
     }
@@ -293,7 +293,7 @@ public class UserView {
 
                 case 7:
                     user = null;
-                    MainMenuView mainMenuView = new MainMenuView(service);
+                  MainMenuView mainMenuView = new MainMenuView(service, inputReader);
                     break;
 
                 default:
