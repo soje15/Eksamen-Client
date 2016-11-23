@@ -21,6 +21,7 @@ public class AdminView {
     public AdminView(Service service, User user) {
         this.service = service;
         this.user = user;
+        inputReader = new Scanner(System.in);
 
     }
 
@@ -32,8 +33,7 @@ public class AdminView {
      System.out.println("(1) - Delete any review");
      System.out.println("(2) - Delete any review comment");
      System.out.println("(3) - log out");
-
-        int choice = new Scanner(System.in).nextInt();
+        int choice = inputReader.nextInt();
 
         switch (choice) {
             case 1:
@@ -42,11 +42,11 @@ public class AdminView {
                 Review deleteReview = new Review();
 
                 System.out.println("Type in the ID of the review, you wish to delete:");
-                int deleteReviewID = inputReader2.nextInt();
+                int deleteReviewID = inputReader.nextInt();
                 deleteReview.setId(deleteReviewID);
 
                 System.out.println("Type in the ID of the user, who owns the review:");
-                int userID = inputReader2.nextInt();
+                int userID = inputReader.nextInt();
                 deleteReview.setUserId(userID);
 
 
@@ -70,7 +70,7 @@ public class AdminView {
 
             case 2:
 
-                Scanner inputReader = new Scanner(System.in);
+                //Scanner inputReader = new Scanner(System.in);
 
                 System.out.println("Type in the ID of the review");
                 int reviewID = inputReader.nextInt();

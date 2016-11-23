@@ -1,6 +1,11 @@
 import configloader.ConfigLoader;
+import sdk.models.User;
 import sdk.services.Service;
+import view.AdminView;
 import view.MainMenuView;
+import view.UserView;
+
+import java.util.Scanner;
 
 /**
  * Created by sorenkolbyejensen on 16/11/2016.
@@ -21,6 +26,10 @@ public class Problem2 {
     public static void main(String[] args) {
         ConfigLoader.parseConfig();
         Service service = new Service();
+        User user = new User();
+
+        AdminView adminView = new AdminView(service, user);
+        UserView userView = new UserView(service, user );
 
         MainMenuView mainMenuView = new MainMenuView(service);
         mainMenuView.MainMenu();

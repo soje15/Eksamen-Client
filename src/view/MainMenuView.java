@@ -15,13 +15,14 @@ public class MainMenuView {
 
 
         private Service service;
-        public AdminView adminView;
-        public UserView userView;
+        private Scanner inputReader;
+
 
 
 
         public MainMenuView(Service service) {
             this.service = service;
+            inputReader = new Scanner(System.in);
 
             MainMenu();
         }
@@ -33,7 +34,6 @@ public class MainMenuView {
             System.out.println("(5) - Shut down");
 
         try {
-            Scanner inputReader = new Scanner(System.in);
             int choice = inputReader.nextInt();
 
 
@@ -42,7 +42,7 @@ public class MainMenuView {
                 case 1:
 
                     final User user = new User();
-                    //Scanner inputReaderUsername = new Scanner(System.in);
+
 
                     System.out.println("Type in your CBS mail");
                     final String username = inputReader.next();
@@ -77,8 +77,8 @@ public class MainMenuView {
                                         user.setCbsMail(data.getCbsMail());
                                         user.setType(data.getType());
 
-                                        UserView userview = new UserView(service, data);
-                                        userview.userMenu();
+                                        UserView userView = new UserView(service, data);
+                                        userView.userMenu();
                                     } else if (data.getType().equals("admin")) {
                                         System.out.println("Loading Admin User" + user.getType());
 

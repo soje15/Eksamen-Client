@@ -19,6 +19,8 @@ public class UserView {
     public UserView(Service service, User user) {
         this.service = service;
         this.user = user;
+        inputReader = new Scanner(System.in);
+
 
     }
 
@@ -36,7 +38,7 @@ public class UserView {
         System.out.println();
         try {
 
-            int choice = new Scanner(System.in).nextInt();
+            int choice = inputReader.nextInt();
 
             switch (choice) {
                 case 1:
@@ -163,7 +165,6 @@ public class UserView {
 
                 case 3:
                     Review review = new Review();
-                    Scanner inputReader = new Scanner(System.in);
 
                     System.out.println("Type in a Review ID");
                     final int reviewID = inputReader.nextInt();
@@ -209,8 +210,8 @@ public class UserView {
 
                 case 4:
                     System.out.println("Type in the ID of the Review, you wish to view.");
-                   Scanner inputReader3 = new Scanner(System.in);
-                    int ReviewID = inputReader3.nextInt();
+
+                    int ReviewID = inputReader.nextInt();
 
                     service.getAllReviews(ReviewID, new ResponseCallback<ArrayList<Review>>() {
                         public void success(ArrayList<Review> data) {
@@ -237,11 +238,11 @@ public class UserView {
                    break;
 
                 case 5:
-                    Scanner inputReader2 = new Scanner(System.in);
+
                     Review deleteReview = new Review();
 
                     System.out.println("Type in the ID of the review, you wish to delete:");
-                    int deleteReviewID = inputReader2.nextInt();
+                    int deleteReviewID = inputReader.nextInt();
 
                     deleteReview.setId(deleteReviewID);
                     deleteReview.setUserId(user.getId());
@@ -263,12 +264,11 @@ public class UserView {
                     break;
 
                 case 6:
-                    Scanner inputReader4 = new Scanner(System.in);
 
                     Review reviewcomment = new Review();
 
                     System.out.println("Type in the ID of the review");
-                    int reviewsID = inputReader4.nextInt();
+                    int reviewsID = inputReader.nextInt();
 
                     reviewcomment.setUserId(user.getId());
                     reviewcomment.setId(reviewsID);
