@@ -1,9 +1,8 @@
-package sdk.services;
+package sdk.service;
 
+import encrypter.Digester;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -23,6 +22,7 @@ import java.util.ArrayList;
 public class Service {
     private ConnectionImpl connectionImpl;
     private Gson gson;
+    private Digester digester;
 
     public Service() {
         this.connectionImpl = new ConnectionImpl();
@@ -242,13 +242,9 @@ public class Service {
 
             public void payload(String json) {
 
-                System.out.println("Payload initialized");
-
                 //TypeToken anvendes, fordi den ellers ikke fatter at den skal bruge Lecture klassen.
 
-
-
-                ArrayList<Lecture> lectures = gson.fromJson(json, new TypeToken<ArrayList<Lecture>>(){}.getType());
+               ArrayList<Lecture> lectures = gson.fromJson(json, new TypeToken<ArrayList<Lecture>>(){}.getType());
 
                 System.out.println("Json converted");
 

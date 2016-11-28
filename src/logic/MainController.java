@@ -1,9 +1,9 @@
-package view;
+package logic;
 
-import Encrypter.Digester;
+import encrypter.Digester;
 import sdk.connection.ResponseCallback;
 import sdk.models.User;
-import sdk.services.Service;
+import sdk.service.Service;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -11,20 +11,18 @@ import java.util.Scanner;
 /**
  * Created by sorenkolbyejensen on 15/11/2016.
  */
-public class MainMenuView {
+public class MainController {
 
 
         private Service service;
         private Scanner inputReader;
-
-
-        protected String username;
-        protected String password;
+        private String username;
+        private String password;
 
 
 
 
-        public MainMenuView(Service service, Scanner inputReader) {
+        public MainController(Service service, Scanner inputReader) {
             this.service = service;
             this.inputReader = inputReader;
             //inputReader = new Scanner(System.in);
@@ -82,8 +80,8 @@ public class MainMenuView {
                                         user.setCbsMail(data.getCbsMail());
                                         user.setType(data.getType());
 
-                                        UserView userView = new UserView(service, data, inputReader);
-                                        userView.userMenu();
+                                        UserController userController = new UserController(service, data, inputReader);
+                                        userController.userMenu();
                                     } else if (data.getType().equals("admin")) {
                                         System.out.println("Loading Admin User" + user.getType());
 
@@ -96,7 +94,7 @@ public class MainMenuView {
                                         user.setCbsMail(data.getCbsMail());
                                         user.setType(data.getType());
 
-                                        AdminView testview = new AdminView(service, user, inputReader);
+                                        AdminController testview = new AdminController(service, user, inputReader);
                                         testview.TestMenu();
                                     }
 

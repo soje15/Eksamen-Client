@@ -1,9 +1,8 @@
-package view;
+package logic;
 
 import sdk.connection.ResponseCallback;
 import sdk.models.*;
-import sdk.services.Service;
-import sun.applet.Main;
+import sdk.service.Service;
 
 import java.util.Scanner;
 
@@ -11,14 +10,14 @@ import java.util.Scanner;
 /**
  * Created by sorenkolbyejensen on 15/11/2016.
  */
-public class AdminView {
+public class AdminController {
 
 
     private Service service;
     private Scanner inputReader;
     private User user;
 
-    public AdminView(Service service, User user, Scanner inputReader) {
+    public AdminController(Service service, User user, Scanner inputReader) {
         this.service = service;
         this.user = user;
         this.inputReader = inputReader;
@@ -102,7 +101,7 @@ public class AdminView {
             case 3:
                 System.out.println();
                 user = null;
-                //MainMenuView mainMenuView = new MainMenuView(service);
+                //MainController mainMenuView = new MainController(service);
                // mainMenuView.MainMenu();
                 break;
 

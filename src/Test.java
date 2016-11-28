@@ -1,7 +1,9 @@
+import encrypter.Digester;
 import sdk.connection.ResponseCallback;
-import sdk.models.Review;
-import sdk.models.User;
-import sdk.services.Service;
+import sdk.models.Lecture;
+import sdk.service.Service;
+
+import java.util.ArrayList;
 
 /**
  * Created by sorenkolbyejensen on 14/11/2016.
@@ -9,7 +11,41 @@ import sdk.services.Service;
 
 
 
-public class Run {
+public class Test {
+
+    public static void main(String[] args) {
+        Service service = new Service();
+        String code = "BALJO1001U_XJA_E16";
+
+
+        String encryptedCode = Digester.encrypt(code);
+        System.out.println(encryptedCode);
+        String decryptedCode = Digester.decrypt(encryptedCode);
+
+        System.out.println(decryptedCode);
+
+        service.getAll(code, new ResponseCallback<ArrayList<Lecture>>() {
+
+            public void success(ArrayList<Lecture> data) {
+
+                for(Lecture lecture: data) {
+
+                    System.out.println(lecture.getDescription());
+                }
+
+
+            }
+
+            public void error(int status) {
+
+            }
+        });
+
+
+    }
+}
+
+    /*
 
     public static void main(String[] args) {
         Service service = new Service();
@@ -32,6 +68,8 @@ public class Run {
       });
         }
     }
+
+    */
     /*
     public static void main(String[] args) {
         Service service = new Service();
@@ -151,7 +189,7 @@ public class Run {
 */
 
 
-//        MainMenuView mainMenuView = new MainMenuView(controller, service);
+//        MainController mainMenuView = new MainController(controller, service);
 
     //      mainMenuView.presentMenu2();
 

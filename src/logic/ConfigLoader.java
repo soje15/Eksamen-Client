@@ -1,4 +1,4 @@
-package configloader;
+package logic;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

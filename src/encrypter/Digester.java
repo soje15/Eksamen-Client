@@ -1,6 +1,5 @@
-package Encrypter;
+package encrypter;
 
-import configloader.ConfigLoader;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -74,19 +73,16 @@ public class Digester {
 
         String encrypted_string = s;
 
-        if("TRUE".equals("TRUE")){
             encrypted_string = base64Encode(xorWithKey(encrypted_string.getBytes(), KEY.getBytes()));
-        }
+
         return encrypted_string;
     }
 
     public static String decrypt(String s) {
-        String Encryption = "TRUE";
         String decrypted_string = s;
 
-        if(Encryption.equals("TRUE")) {
             decrypted_string = new String(xorWithKey(base64Decode(s), KEY.getBytes()));
-        }
+
         return decrypted_string;
     }
 

@@ -1,7 +1,7 @@
-package view;
+package logic;
 import sdk.connection.ResponseCallback;
 import sdk.models.*;
-import sdk.services.Service;
+import sdk.service.Service;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -10,13 +10,13 @@ import java.util.Scanner;
 /**
  * Created by sorenkolbyejensen on 15/11/2016.
  */
-public class UserView {
+public class UserController {
 
     private Service service;
     private Scanner inputReader;
     private User user;
 
-    public UserView(Service service, User user, Scanner inputReader) {
+    public UserController(Service service, User user, Scanner inputReader) {
         this.service = service;
         this.user = user;
         this.inputReader = inputReader;
@@ -181,6 +181,11 @@ public class UserView {
                     System.out.println("Type in your rating (1-5 points)");
                     int rating = inputReader.nextInt();
 
+                    if (rating > 5) {
+                        System.out.println("Typed in invalid rating");
+                        userMenu();
+                    }
+
                     review.setRating(rating);
 
                     System.out.println("Type in a comment");
@@ -209,7 +214,7 @@ public class UserView {
                     break;
 
                 case 4:
-                    System.out.println("Type in the ID of the Review, you wish to view.");
+                    System.out.println("Type in the ID of the Review, you wish to logic.");
 
                     int ReviewID = inputReader.nextInt();
 
@@ -293,7 +298,7 @@ public class UserView {
 
                 case 7:
                     user = null;
-                  MainMenuView mainMenuView = new MainMenuView(service, inputReader);
+                  MainController mainController = new MainController(service, inputReader);
                     break;
 
                 default:
