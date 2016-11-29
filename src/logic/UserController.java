@@ -3,9 +3,11 @@ import sdk.connection.ResponseCallback;
 import sdk.models.*;
 import sdk.service.Service;
 
+import java.lang.reflect.Array;
 import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -155,30 +157,53 @@ public class UserController {
 
                 case 3:
 
+                    final List<Integer> lectureIDList = new ArrayList<Integer>();
 
-                    service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<Lecture>>() {
-                        public void success(ArrayList<Lecture> data) {
-                            for (Lecture lectures : data) {
-                                System.out.println();
-                                System.out.println("Lecture: " + lectures.getDescription());
-                                System.out.println("Date: " + lectures.getStartDate());
-                                System.out.println("id: " + lectures.getId());
-                                System.out.println();
+
+                    try {
+                        service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<Lecture>>() {
+                            public void success(ArrayList<Lecture> data) {
+
+                                for (Lecture lectures : data) {
+                                    System.out.println();
+                                    System.out.println("Lecture: " + lectures.getDescription());
+                                    System.out.println("Date: " + lectures.getStartDate());
+                                    System.out.println("id: " + lectures.getId());
+                                    System.out.println();
+                                    lectureIDList.add(lectures.getId());
+                                }
+
+
                             }
-                        }
 
-                        public void error(int status) {
+                            public void error(int status) {
+                                System.out.println("Something went wrong, when trying to GET lectures");
 
-                        }
-                    });
+                            }
+                        });
+                    }catch(Exception e) {
+                        System.out.println("Something went wrong, when trying to GET lectures");
+                    }
 
                     Review review = new Review();
-
 
                     System.out.println("Type in a lecture ID");
                     int lectureID = inputReader.nextInt();
 
-                    review.setLectureId(lectureID);
+
+
+                    if(lectureIDList.contains(lectureID)) {
+
+                        review.setLectureId(lectureID);
+
+
+
+                    } else {
+                        System.out.println("Invalid lectureID, please pick one from the list");
+                        userMenu();
+                    }
+
+
 
                     review.setUserId(user.getId());
 
@@ -189,7 +214,7 @@ public class UserController {
                     if (rating > 5) {
                         System.out.println("Your rating is invalid(max 5)");
                         userMenu();
-                    } else if (rating < 0){
+                    } else if (rating <= 0){
                         System.out.println();
                         System.out.println("Your rating is invalid (atleast 1, up to 5) ");
                         System.out.println();
