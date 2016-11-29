@@ -29,6 +29,7 @@ public class Service {
         this.gson = new Gson();
     }
 
+
     //review/{lectureId}
 
 
@@ -47,8 +48,6 @@ public class Service {
 
         try {
             HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/student/reviewcomment/");
-            System.out.println(connectionImpl.serverURL + "/student/review/" + review.getUserId() + review.getId());    //
-
             putRequest.addHeader("Content-Type", "application/json");
 
             StringEntity jsonReview = new StringEntity(gson.toJson(review));
@@ -57,8 +56,9 @@ public class Service {
             connectionImpl.execute(putRequest, new ResponseParser() {
 
                 public void payload(String json) {
+                    String decryptedJSON = Digester.decrypt(json);
 
-                    Boolean isDeleted = gson.fromJson(json, Boolean.class);
+                    Boolean isDeleted = gson.fromJson(decryptedJSON, Boolean.class);
 
                     System.out.println(isDeleted);
 
@@ -92,7 +92,6 @@ public class Service {
 
         try {
         HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/student/review/");
-            System.out.println(connectionImpl.serverURL + "/student/review/" + review.getUserId() + review.getId());
 
             putRequest.addHeader("Content-Type", "application/json");
 
@@ -102,8 +101,9 @@ public class Service {
         connectionImpl.execute(putRequest, new ResponseParser() {
 
             public void payload(String json) {
+                String decryptedJSON = Digester.decrypt(json);
 
-                Boolean isDeleted = gson.fromJson(json, Boolean.class);
+                Boolean isDeleted = gson.fromJson(decryptedJSON, Boolean.class);
 
                 System.out.println(isDeleted);
 
@@ -139,7 +139,8 @@ public class Service {
           connectionImpl.execute(putRequest, new ResponseParser() {
 
               public void payload(String json) {
-                  boolean isDeleted  = gson.fromJson(json, Boolean.class);
+                  String decryptedJSON = Digester.decrypt(json);
+                  boolean isDeleted  = gson.fromJson(decryptedJSON, Boolean.class);
                   responsecallback.success(isDeleted);
 
               }
@@ -152,42 +153,6 @@ public class Service {
 
     }
 
-    /**
-     * @param lecture
-     * @param responseCallback
-     */
-    public void create(Lecture lecture, final ResponseCallback<Lecture> responseCallback) {
-
-        try {
-            HttpPost postRequest = new HttpPost(ConnectionImpl.serverURL + "/lecture");
-
-            postRequest.addHeader("Content-Type", "application/json");
-
-
-            StringEntity jsonLecture = new StringEntity(gson.toJson(lecture));
-            postRequest.setEntity(jsonLecture);
-
-            connectionImpl.execute(postRequest, new ResponseParser() {
-
-                public void payload(String json) {
-
-                    Lecture newLecture = gson.fromJson(json, Lecture.class);
-                    responseCallback.success(newLecture);
-
-                }
-
-
-                public void error(int status) {
-                    responseCallback.error(status);
-                }
-            });
-
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-    }
 
 
     public void addReview(Review review, final ResponseCallback<String> responseCallback) {
@@ -205,8 +170,9 @@ public class Service {
             connectionImpl.execute(postRequest, new ResponseParser() {
 
                 public void payload(String json) {
+                    String decryptedJSON = Digester.decrypt(json);
 
-                   String isAdded = gson.fromJson(json, String.class);
+                   String isAdded = gson.fromJson(decryptedJSON, String.class);
                     responseCallback.success(isAdded);
 
 
@@ -233,7 +199,7 @@ public class Service {
      * @param responseCallback
      */
 
-    public void getAll(String code, final ResponseCallback<ArrayList<Lecture>> responseCallback) {
+    public void getAllLectures(String code, final ResponseCallback<ArrayList<Lecture>> responseCallback) {
 
         HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/lecture/" + code);
 
@@ -242,11 +208,43 @@ public class Service {
 
             public void payload(String json) {
 
+                String decryptedJSON = Digester.decrypt(json);
+
                 //TypeToken anvendes, fordi den ellers ikke fatter at den skal bruge Lecture klassen.
 
-               ArrayList<Lecture> lectures = gson.fromJson(json, new TypeToken<ArrayList<Lecture>>(){}.getType());
+               ArrayList<Lecture> lectures = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<Lecture>>(){}.getType());
 
-                System.out.println("Json converted");
+
+
+                responseCallback.success(lectures);
+
+
+            }
+
+            public void error(int status) {
+                responseCallback.error(status);
+            }
+        });
+
+    }
+
+
+    public void getAllLecturesByUserID(Integer userID, final ResponseCallback<ArrayList<Lecture>> responseCallback) {
+
+        HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/lectureByID/" + userID);
+
+
+        this.connectionImpl.execute(getRequest, new ResponseParser() {
+
+            public void payload(String json) {
+
+                String decryptedJSON = Digester.decrypt(json);
+
+                //TypeToken anvendes, fordi den ellers ikke fatter at den skal bruge Lecture klassen.
+
+                ArrayList<Lecture> lectures = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<Lecture>>(){}.getType());
+
+
 
                 responseCallback.success(lectures);
 
@@ -268,8 +266,9 @@ public class Service {
         this.connectionImpl.execute(getRequest, new ResponseParser() {
 
             public void payload(String json) {
+                String decryptedJSON = Digester.decrypt(json);
 
-                ArrayList<Review> reviews = gson.fromJson(json, new TypeToken<ArrayList<Review>>(){}.getType());
+                ArrayList<Review> reviews = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<Review>>(){}.getType());
 
                 responseCallback.success(reviews);
 
@@ -287,10 +286,14 @@ public class Service {
     public void authLogin(String cbsMail, String password , final ResponseCallback<User> responseCallback){
         HttpPost postRequest = new HttpPost(ConnectionImpl.serverURL + "/login");
 
+        String doubleHashedPassword = Digester.hashWithSalt(Digester.hashWithSalt(password));
+
+        String encryptedUsername = Digester.encrypt(cbsMail);
+        String encryptedPassword = Digester.encrypt(doubleHashedPassword);
 
         final User userInfo = new User();
-        userInfo.setCbsMail(cbsMail);
-        userInfo.setPassword(password);
+        userInfo.setCbsMail(encryptedUsername);
+        userInfo.setPassword(encryptedPassword);
 
         try {
 
@@ -301,12 +304,12 @@ public class Service {
 
             this.connectionImpl.execute(postRequest, new ResponseParser() {
                 public void payload(String json) {
-                    //String decryptedjson = Digester.decrypt(json);
+
+                    String decryptedjson = Digester.decrypt(json);
 
 
-                    User userToken = gson.fromJson(json, User.class);
+                    User userToken = gson.fromJson(decryptedjson, User.class);
 
-                   // LoginToken.setAccessToken(userToken);
 
 
                     responseCallback.success(userToken);
@@ -328,15 +331,16 @@ public class Service {
 
 
 
-    public void findById(int id, final ResponseCallback<ArrayList<Course>> responseCallback) {
+    public void getCourses(int id, final ResponseCallback<ArrayList<Course>> responseCallback) {
         HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/course/" + id);
       //getRequest.addHeader("Content-Type", "application/json");
 
 
         this.connectionImpl.execute(getRequest, new ResponseParser() {
             public void payload(String json) {
+                String decryptedJSON = Digester.decrypt(json);
 
-                ArrayList<Course> courses = gson.fromJson(json, new TypeToken<ArrayList<Course>>(){}.getType());
+                ArrayList<Course> courses = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<Course>>(){}.getType());
 
 
                 responseCallback.success(courses);

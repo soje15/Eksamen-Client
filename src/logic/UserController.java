@@ -31,8 +31,8 @@ public class UserController {
         System.out.println("(1) - Show all lectures");
         System.out.println("(2) - Show attended courses");
         System.out.println("(3) - Add review to course");
-        System.out.println("(4) - Show all reviews");
-        System.out.println("(5) - Delete review");
+        System.out.println("(4) - Show all reviews on a lecture");
+        System.out.println("(5) - softdelete your own review");
         System.out.println("(6) - Delete review comment");
         System.out.println("(7) - log out");
         System.out.println();
@@ -42,7 +42,26 @@ public class UserController {
 
             switch (choice) {
                 case 1:
-                    service.findById(user.getId(), new ResponseCallback<ArrayList<Course>>() {
+
+                    service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<Lecture>>() {
+                        public void success(ArrayList<Lecture> data) {
+                            for(Lecture lecture: data) {
+                                System.out.println();
+                                System.out.println("Fag: " + lecture.getDescription());
+                                System.out.println("Type: " + lecture.getType());
+                                System.out.println("Start tidspunkt " + lecture.getStartDate());
+                                System.out.println("Slut tidspunkt " + lecture.getEndDate());
+                                System.out.println("Lokation: " +  lecture.getLocation());
+                                System.out.println();
+                            }
+                        }
+
+                        public void error(int status) {
+
+                        }
+                    });
+                    /*
+                    service.getCourses(user.getId(), new ResponseCallback<ArrayList<Course>>() {
 
                         public void success(ArrayList<Course> data) {
 
@@ -63,7 +82,7 @@ public class UserController {
                             for (Course courseslist : courseArrayList) {
 
 
-                                service.getAll(courseslist.getDisplaytext(), new ResponseCallback<ArrayList<Lecture>>() {
+                                service.getAllLectures(courseslist.getDisplaytext(), new ResponseCallback<ArrayList<Lecture>>() {
                                     public void success(ArrayList<Lecture> data) {
 
                                         for (Lecture lecture : data) {
@@ -72,6 +91,8 @@ public class UserController {
                                             System.out.println("Type: " + lecture.getType());
                                             System.out.println("Start tidspunkt " + lecture.getStartDate());
                                             System.out.println("Slut tidspunkt " + lecture.getEndDate());
+                                            System.out.println("Lokation: " +  lecture.getLocation());
+                                            System.out.println(lecture.getTeacher());
                                             System.out.println();
                                         }
 
@@ -94,58 +115,26 @@ public class UserController {
 
 
                     });
+                    */
+
                     System.out.println();
                     userMenu();
-                /*
-
-                System.out.println("Indtast dit kursus ID, fra listen.");
-                System.out.println("BALJO1001U_XJA_E16");
-                System.out.println("BBLCO1242U_XA_E16");
-                String courseCode = new Scanner(System.in).next();
-
-                //Eks: BALJO1001U_XJA_E16
-
-
-                service.getAll(courseCode, new ResponseCallback<ArrayList<Lecture>>() {
-
-
-                    public void success(ArrayList<Lecture> data) {
-
-                            for (Lecture lecture : data) {
-                                System.out.println();
-                                System.out.println("Fag: " + lecture.getDescription());
-                                System.out.println("Type: " + lecture.getType());
-                                System.out.println("Start tidspunkt " + lecture.getStartDate());
-                                System.out.println("Slut tidspunkt " + lecture.getEndDate());
-                                System.out.println();
-                            }
-                        userMenu();
-
-
-                    }
-
-                    public void error(int status) {
-                        System.out.println("error");
-                        System.exit(0);
-                    }
-                });
-                */
-
-
                     break;
+
 
                 case 2:
 
                     int userID = user.getId();
 
-                    service.findById(userID, new ResponseCallback<ArrayList<Course>>() {
+                    service.getCourses(userID, new ResponseCallback<ArrayList<Course>>() {
                         public void success(ArrayList<Course> data) {
 
                             for (Course course : data) {
-
+                                System.out.println();
                                 System.out.println("Displaytext: " + course.getDisplaytext());
                                 System.out.println("course ID " + course.getId());
                                 System.out.println("Lecture name: " + course.getCode());
+                                System.out.println();
 
 
                             }
@@ -214,29 +203,47 @@ public class UserController {
                     break;
 
                 case 4:
-                    System.out.println("Type in the ID of the Review, you wish to logic.");
-
-                    int ReviewID = inputReader.nextInt();
-
-                    service.getAllReviews(ReviewID, new ResponseCallback<ArrayList<Review>>() {
-                        public void success(ArrayList<Review> data) {
-                            for (Review reviews : data) {
-
-
-                                System.out.println();
-                                System.out.println("Comment: " + reviews.getComment());
-                                System.out.println("Lecture ID: " + reviews.getLectureId());
-                                System.out.println("Rating: " + reviews.getRating());
-                                System.out.println();
-
+                    service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<Lecture>>() {
+                        public void success(ArrayList<Lecture> data) {
+                            for (Lecture lecture:data) {
+                                System.out.println("Lecture ID: " + lecture.getId());
                             }
-
                         }
 
                         public void error(int status) {
 
                         }
                     });
+
+                    System.out.println();
+                    System.out.println("Type in the ID of the Lecture, you wish to view reviews for.");
+
+                    int ReviewID = inputReader.nextInt();
+
+                    try {
+
+                        service.getAllReviews(ReviewID, new ResponseCallback<ArrayList<Review>>() {
+                            public void success(ArrayList<Review> data) {
+                                for (Review reviews : data) {
+
+
+                                    System.out.println();
+                                    System.out.println("Comment: " + reviews.getComment());
+                                    System.out.println("Lecture ID: " + reviews.getLectureId());
+                                    System.out.println("Rating: " + reviews.getRating());
+                                    System.out.println();
+
+                                }
+
+                            }
+
+                            public void error(int status) {
+
+                            }
+                        });
+                    }catch (Exception e) {
+                        System.out.println("Could not find reviews");
+                    }
                     System.out.println();
                     userMenu();
 

@@ -55,15 +55,11 @@ public class MainController {
                     password = inputReader.next();
 
 
-                    String hashedPassword = Digester.hashWithSalt(password);
-                    String doubleHashed = Digester.hashWithSalt(hashedPassword);
-
-                    //System.out.println(doubleHashed);
 
 
                     try {
 
-                        service.authLogin(username, doubleHashed, new ResponseCallback<User>() {
+                        service.authLogin(username, password, new ResponseCallback<User>() {
                             public void success(User data) {
 
                                 if (data != null) {

@@ -15,6 +15,22 @@ public class Test {
 
     public static void main(String[] args) {
         Service service = new Service();
+        service.getAllLecturesByUserID(6, new ResponseCallback<ArrayList<Lecture>>() {
+            public void success(ArrayList<Lecture> data) {
+                for (Lecture lecture : data) {
+                    System.out.println(lecture.getDescription());
+                }
+            }
+
+            public void error(int status) {
+
+            }
+        });
+    }
+}
+    /*
+    public static void main(String[] args) {
+        Service service = new Service();
         String code = "BALJO1001U_XJA_E16";
 
 
@@ -24,7 +40,7 @@ public class Test {
 
         System.out.println(decryptedCode);
 
-        service.getAll(code, new ResponseCallback<ArrayList<Lecture>>() {
+        service.getAllLectures(code, new ResponseCallback<ArrayList<Lecture>>() {
 
             public void success(ArrayList<Lecture> data) {
 
@@ -44,7 +60,7 @@ public class Test {
 
     }
 }
-
+*/
     /*
 
     public static void main(String[] args) {
