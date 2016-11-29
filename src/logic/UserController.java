@@ -3,6 +3,7 @@ import sdk.connection.ResponseCallback;
 import sdk.models.*;
 import sdk.service.Service;
 
+import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -45,13 +46,13 @@ public class UserController {
 
                     service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<Lecture>>() {
                         public void success(ArrayList<Lecture> data) {
-                            for(Lecture lecture: data) {
+                            for (Lecture lecture : data) {
                                 System.out.println();
                                 System.out.println("Fag: " + lecture.getDescription());
                                 System.out.println("Type: " + lecture.getType());
                                 System.out.println("Start tidspunkt " + lecture.getStartDate());
                                 System.out.println("Slut tidspunkt " + lecture.getEndDate());
-                                System.out.println("Lokation: " +  lecture.getLocation());
+                                System.out.println("Lokation: " + lecture.getLocation());
                                 System.out.println();
                             }
                         }
@@ -153,11 +154,26 @@ public class UserController {
                     break;
 
                 case 3:
+
+
+                    service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<Lecture>>() {
+                        public void success(ArrayList<Lecture> data) {
+                            for (Lecture lectures : data) {
+                                System.out.println();
+                                System.out.println("Lecture: " + lectures.getDescription());
+                                System.out.println("Date: " + lectures.getStartDate());
+                                System.out.println("id: " + lectures.getId());
+                                System.out.println();
+                            }
+                        }
+
+                        public void error(int status) {
+
+                        }
+                    });
+
                     Review review = new Review();
 
-                    System.out.println("Type in a Review ID");
-                    final int reviewID = inputReader.nextInt();
-                    review.setId(reviewID);
 
                     System.out.println("Type in a lecture ID");
                     int lectureID = inputReader.nextInt();
@@ -171,9 +187,15 @@ public class UserController {
                     int rating = inputReader.nextInt();
 
                     if (rating > 5) {
-                        System.out.println("Typed in invalid rating");
+                        System.out.println("Your rating is invalid(max 5)");
                         userMenu();
-                    }
+                    } else if (rating < 0){
+                        System.out.println();
+                        System.out.println("Your rating is invalid (atleast 1, up to 5) ");
+                        System.out.println();
+                        userMenu();
+
+                            }
 
                     review.setRating(rating);
 
