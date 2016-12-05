@@ -5,7 +5,16 @@ package sdk.connection;
  */
 public interface ResponseParser {
 
+    /**
+     *
+     * @param json
+     */
     void payload(String json);
+
+    /**
+     *
+     * @param status
+     */
 
     void error(int status);
 

@@ -1,4 +1,4 @@
-package logic;
+package controller;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

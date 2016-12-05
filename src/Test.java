@@ -1,9 +1,8 @@
-import encrypter.Digester;
-import sdk.connection.ResponseCallback;
-import sdk.models.Lecture;
+import controller.ViewHandler;
+import view.MainView;
 import sdk.service.Service;
 
-import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Created by sorenkolbyejensen on 14/11/2016.
@@ -12,12 +11,25 @@ import java.util.ArrayList;
 
 
 public class Test {
+    public static void main(String[] args) {
+        Service service = new Service();
+        Scanner inputreader = new Scanner(System.in);
+        System.out.println("Running test");
+
+        ViewHandler viewHandler = new ViewHandler();
+        MainView mainView = new MainView(service, inputreader, viewHandler);
+        viewHandler.setMainView(mainView);
+        viewHandler.getMainView().MainMenu();
+    }
+}
+
+    /*
 
     public static void main(String[] args) {
         Service service = new Service();
-        service.getAllLecturesByUserID(6, new ResponseCallback<ArrayList<Lecture>>() {
-            public void success(ArrayList<Lecture> data) {
-                for (Lecture lecture : data) {
+        service.getAllLecturesByUserID(6, new ResponseCallback<ArrayList<LectureDTO>>() {
+            public void success(ArrayList<LectureDTO> data) {
+                for (LectureDTO lecture : data) {
                     System.out.println(lecture.getDescription());
                 }
             }
@@ -28,6 +40,8 @@ public class Test {
         });
     }
 }
+
+*/
     /*
     public static void main(String[] args) {
         Service service = new Service();
@@ -40,11 +54,11 @@ public class Test {
 
         System.out.println(decryptedCode);
 
-        service.getAllLectures(code, new ResponseCallback<ArrayList<Lecture>>() {
+        service.getAllLectures(code, new ResponseCallback<ArrayList<LectureDTO>>() {
 
-            public void success(ArrayList<Lecture> data) {
+            public void success(ArrayList<LectureDTO> data) {
 
-                for(Lecture lecture: data) {
+                for(LectureDTO lecture: data) {
 
                     System.out.println(lecture.getDescription());
                 }
@@ -65,8 +79,8 @@ public class Test {
 
     public static void main(String[] args) {
         Service service = new Service();
-        Review review = new Review();
-        User user = new User();
+        ReviewDTO review = new ReviewDTO();
+        UserDTO user = new UserDTO();
 
         review.setId(10);
         review.setUserId(2);
@@ -92,9 +106,9 @@ public class Test {
 
         int ID = 4;
 
-        service.getAllReviews(ID, new ResponseCallback<ArrayList<Review>>() {
-            public void success(ArrayList<Review> data) {
-                for (Review reviews:data) {
+        service.getAllReviews(ID, new ResponseCallback<ArrayList<ReviewDTO>>() {
+            public void success(ArrayList<ReviewDTO> data) {
+                for (ReviewDTO reviews:data) {
                     System.out.println("test" + reviews.getComment());
                 }
             }
@@ -110,15 +124,15 @@ public class Test {
     public static void main(String[] args) {
         Service service = new Service();
 
-        Review review = new Review();
+        ReviewDTO review = new ReviewDTO();
         review.setId(9);
         review.setUserId(2);
         review.setLectureId(6);
         review.setRating(5);
         review.setComment("hej");
 
-        service.addReview(review, new ResponseCallback<Review>() {
-            public void success(Review data) {
+        service.addReview(review, new ResponseCallback<ReviewDTO>() {
+            public void success(ReviewDTO data) {
                 System.out.println(data);
             }
 
@@ -143,8 +157,8 @@ public class Test {
 
         System.out.println(doubleHashed);
 
-   service.authLogin(cbsMail, doubleHashed, new ResponseCallback<User>() {
-       public void success(User data) {
+   service.authLogin(cbsMail, doubleHashed, new ResponseCallback<UserDTO>() {
+       public void success(UserDTO data) {
            System.out.println(data.getType());
 
        }
@@ -164,12 +178,12 @@ public class Test {
         Service service = new Service();
 
 
-        service.getAll("BALJO1001U_XJA_E16", new ResponseCallback<ArrayList<Lecture>>() {
+        service.getAll("BALJO1001U_XJA_E16", new ResponseCallback<ArrayList<LectureDTO>>() {
 
-            public void success(ArrayList<Lecture> data) {
+            public void success(ArrayList<LectureDTO> data) {
                 System.out.println("win");
 
-                for (Lecture lecture:data) {
+                for (LectureDTO lecture:data) {
                     System.out.println("Test" + lecture.getDescription());
                 }
 
@@ -184,10 +198,10 @@ public class Test {
         */
 
         /*
-        service.findById("3", new ResponseCallback<ArrayList<Course>>() {
+        service.findById("3", new ResponseCallback<ArrayList<CourseDTO>>() {
 
 
-            public void success(ArrayList<Course> data) {
+            public void success(ArrayList<CourseDTO> data) {
 
                     System.out.println("Success");
                     //System.out.println(data());
@@ -216,12 +230,12 @@ public class Test {
     public static void main(String[] args) {
 
         Service bookService = new Service();
-        Lecture bookToUpdate = new Lecture();
+        LectureDTO bookToUpdate = new LectureDTO();
 
         bookToUpdate.setSubtitle("Subtitle");
-        bookService.update("5829a87a3f5250a6bd2d25d0" , bookToUpdate, new ResponseCallback<Lecture>() {
+        bookService.update("5829a87a3f5250a6bd2d25d0" , bookToUpdate, new ResponseCallback<LectureDTO>() {
 
-            public void success(Lecture data) {
+            public void success(LectureDTO data) {
                              int i = 1;
                 System.out.println("Success");
             }
@@ -264,15 +278,15 @@ public class Test {
     public static void main(String[] args) {
         Service bookService = new Service();
 
-        Lecture book = new Lecture();
+        LectureDTO book = new LectureDTO();
         book.setTitle("En meget sjov bog");
         book.setSubtitle("En meget sjov subtitle");
         book.setPrice(299);
         book.setEdition(1);
         book.setPagecount(200);
 
-        bookService.create(book, new ResponseCallback<Lecture>() {
-            public void success(Lecture data) {
+        bookService.create(book, new ResponseCallback<LectureDTO>() {
+            public void success(LectureDTO data) {
                 int i = 1;
             }
 
@@ -287,11 +301,11 @@ public class Test {
      /*
     public static void main(String[] args) {
         Service bookService = new Service();
-        bookService.getAll(new ResponseCallback<ArrayList<Lecture>>() {
+        bookService.getAll(new ResponseCallback<ArrayList<LectureDTO>>() {
 
-            public void success(ArrayList<Lecture> bookShelf) {
+            public void success(ArrayList<LectureDTO> bookShelf) {
 
-                for(Lecture book:bookShelf){
+                for(LectureDTO book:bookShelf){
 
 
                     System.out.println("Title:\t" + book.getTitle());
@@ -301,7 +315,7 @@ public class Test {
                     System.out.println("Edition:\t" + book.getEdition());
                     System.out.println("PageCount:\t" + book.getPagecount());
                     System.out.println("Price:\t" +book.getPrice());
-                    System.out.println("User:\t" + book.getTeacher());
+                    System.out.println("UserDTO:\t" + book.getTeacher());
                     System.out.println("Created At:\t" + book.getCreatedAt());
 
 

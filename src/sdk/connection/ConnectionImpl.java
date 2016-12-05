@@ -23,7 +23,12 @@ public class ConnectionImpl {
     this.httpClient = HttpClients.createDefault();
   }
 
-// Laver et kald på serveren, og venter på at serveren giver et svar tilbage.
+
+  /**
+   * Laver et kald på serveren, og venter på at serveren giver et svar tilbage.
+   * @param uriRequest
+   * @param parser
+   */
   public void execute(HttpUriRequest uriRequest, final ResponseParser parser){
 
     // Create a custom response handler
@@ -57,7 +62,6 @@ public class ConnectionImpl {
 
         parser.payload(json);
 
-      //Handle successful response
 
     } catch (IOException e) {
       e.printStackTrace();

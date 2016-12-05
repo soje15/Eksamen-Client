@@ -19,6 +19,7 @@ import java.util.ArrayList;
  * Created by sorenkolbyejensen on 14/11/2016.
  */
 
+
 public class Service {
     private ConnectionImpl connectionImpl;
     private Gson gson;
@@ -33,18 +34,13 @@ public class Service {
     //review/{lectureId}
 
 
+
     /**
      *
-     *
-     *
-     * OBS: brug StringEntity, når du skal ind og "Indsætte" data - eks create, update.
-     *
-     * @param
+     * @param review
      * @param responseCallback
      */
-
-
-    public void deleteReviewComment(Review review, final ResponseCallback<Boolean> responseCallback){
+    public void deleteReviewComment(ReviewDTO review, final ResponseCallback<Boolean> responseCallback) {
 
         try {
             HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/student/reviewcomment/");
@@ -81,43 +77,41 @@ public class Service {
     }
 
 
-
-
-
-
-
-
-
-    public void updateReview(Review review, final ResponseCallback<Boolean> responseCallback){
+    /**
+     *
+     * @param review
+     * @param responseCallback
+     */
+    public void updateReview(ReviewDTO review, final ResponseCallback<Boolean> responseCallback) {
 
         try {
-        HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/student/review/");
+            HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/student/review/");
 
             putRequest.addHeader("Content-Type", "application/json");
 
             StringEntity jsonReview = new StringEntity(gson.toJson(review));
             putRequest.setEntity(jsonReview);
 
-        connectionImpl.execute(putRequest, new ResponseParser() {
+            connectionImpl.execute(putRequest, new ResponseParser() {
 
-            public void payload(String json) {
-                String decryptedJSON = Digester.decrypt(json);
+                public void payload(String json) {
+                    String decryptedJSON = Digester.decrypt(json);
 
-                Boolean isDeleted = gson.fromJson(decryptedJSON, Boolean.class);
+                    Boolean isDeleted = gson.fromJson(decryptedJSON, Boolean.class);
 
-                System.out.println(isDeleted);
+                    System.out.println(isDeleted);
 
-                responseCallback.success(isDeleted);
-
-
-            }
-
-            public void error(int status) {
-            responseCallback.error(status);
-            }
+                    responseCallback.success(isDeleted);
 
 
-        });
+                }
+
+                public void error(int status) {
+                    responseCallback.error(status);
+                }
+
+
+            });
         } catch (Exception e) {
 
         }
@@ -125,7 +119,12 @@ public class Service {
 
     }
 
-
+    /**
+     *
+     * @param userid
+     * @param reviewID
+     * @param responsecallback
+     */
     public void deleteReview(int userid, int reviewID, final ResponseCallback<Boolean> responsecallback) {
 
         HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/review/" + userid + reviewID);
@@ -133,29 +132,30 @@ public class Service {
         putRequest.addHeader("Content-Type", "application/json");
 
 
-
-
         //Bruger execute metoden, til at tage vores Http-request og parse den til serveren.
-          connectionImpl.execute(putRequest, new ResponseParser() {
+        connectionImpl.execute(putRequest, new ResponseParser() {
 
-              public void payload(String json) {
-                  String decryptedJSON = Digester.decrypt(json);
-                  boolean isDeleted  = gson.fromJson(decryptedJSON, Boolean.class);
-                  responsecallback.success(isDeleted);
+            public void payload(String json) {
+                String decryptedJSON = Digester.decrypt(json);
+                boolean isDeleted = gson.fromJson(decryptedJSON, Boolean.class);
+                responsecallback.success(isDeleted);
 
-              }
+            }
 
-              public void error(int status) {
-                  responsecallback.error(status);
-              }
-          });
+            public void error(int status) {
+                responsecallback.error(status);
+            }
+        });
 
 
     }
 
-
-
-    public void addReview(Review review, final ResponseCallback<String> responseCallback) {
+    /**
+     *
+     * @param review
+     * @param responseCallback
+     */
+    public void addReview(ReviewDTO review, final ResponseCallback<String> responseCallback) {
 
         try {
 
@@ -172,7 +172,7 @@ public class Service {
                 public void payload(String json) {
                     String decryptedJSON = Digester.decrypt(json);
 
-                   String isAdded = gson.fromJson(decryptedJSON, String.class);
+                    String isAdded = gson.fromJson(decryptedJSON, String.class);
                     responseCallback.success(isAdded);
 
 
@@ -195,14 +195,14 @@ public class Service {
     //returnere void, grundet måden vi har implementeret callbacks.
 
     /**
-     *
      * @param responseCallback
      */
 
-    public void getAllLectures(String code, final ResponseCallback<ArrayList<Lecture>> responseCallback) {
+    /*
+
+    public void getAllLectures(String code, final ResponseCallback<ArrayList<LectureDTO>> responseCallback) {
 
         HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/lecture/" + code);
-
 
         this.connectionImpl.execute(getRequest, new ResponseParser() {
 
@@ -210,15 +210,11 @@ public class Service {
 
                 String decryptedJSON = Digester.decrypt(json);
 
-                //TypeToken anvendes, fordi den ellers ikke fatter at den skal bruge Lecture klassen.
-
-               ArrayList<Lecture> lectures = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<Lecture>>(){}.getType());
-
-
+                //TypeToken anvendes, fordi den ellers ikke fatter at den skal bruge LectureDTO klassen.
+                ArrayList<LectureDTO> lectures = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<LectureDTO>>() {
+                }.getType());
 
                 responseCallback.success(lectures);
-
-
             }
 
             public void error(int status) {
@@ -227,9 +223,14 @@ public class Service {
         });
 
     }
+*/
 
-
-    public void getAllLecturesByUserID(Integer userID, final ResponseCallback<ArrayList<Lecture>> responseCallback) {
+    /**
+     *
+     * @param userID
+     * @param responseCallback
+     */
+    public void getAllLecturesByUserID(Integer userID, final ResponseCallback<ArrayList<LectureDTO>> responseCallback) {
 
         HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/lectureByID/" + userID);
 
@@ -240,14 +241,12 @@ public class Service {
 
                 String decryptedJSON = Digester.decrypt(json);
 
-                //TypeToken anvendes, fordi den ellers ikke fatter at den skal bruge Lecture klassen.
-
-                ArrayList<Lecture> lectures = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<Lecture>>(){}.getType());
-
+                //TypeToken anvendes, fordi den ellers ikke forstår at den skal bruge LectureDTO klassen.
+                ArrayList<LectureDTO> lectures = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<LectureDTO>>() {
+                }.getType());
 
 
                 responseCallback.success(lectures);
-
 
             }
 
@@ -258,7 +257,7 @@ public class Service {
 
     }
 
-    public void getAllReviews(Integer lectureId, final ResponseCallback<ArrayList<Review>> responseCallback) {
+    public void getAllReviews(Integer lectureId, final ResponseCallback<ArrayList<ReviewDTO>> responseCallback) {
 
         HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/review/" + lectureId);
 
@@ -268,7 +267,8 @@ public class Service {
             public void payload(String json) {
                 String decryptedJSON = Digester.decrypt(json);
 
-                ArrayList<Review> reviews = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<Review>>(){}.getType());
+                ArrayList<ReviewDTO> reviews = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<ReviewDTO>>() {
+                }.getType());
 
                 responseCallback.success(reviews);
 
@@ -282,8 +282,13 @@ public class Service {
 
     }
 
-
-    public void authLogin(String cbsMail, String password , final ResponseCallback<User> responseCallback){
+    /**
+     *
+     * @param cbsMail
+     * @param password
+     * @param responseCallback
+     */
+    public void authLogin(String cbsMail, String password, final ResponseCallback<UserDTO> responseCallback) {
         HttpPost postRequest = new HttpPost(ConnectionImpl.serverURL + "/login");
 
         String doubleHashedPassword = Digester.hashWithSalt(Digester.hashWithSalt(password));
@@ -291,7 +296,7 @@ public class Service {
         String encryptedUsername = Digester.encrypt(cbsMail);
         String encryptedPassword = Digester.encrypt(doubleHashedPassword);
 
-        final User userInfo = new User();
+        final UserDTO userInfo = new UserDTO();
         userInfo.setCbsMail(encryptedUsername);
         userInfo.setPassword(encryptedPassword);
 
@@ -308,8 +313,7 @@ public class Service {
                     String decryptedjson = Digester.decrypt(json);
 
 
-                    User userToken = gson.fromJson(decryptedjson, User.class);
-
+                    UserDTO userToken = gson.fromJson(decryptedjson, UserDTO.class);
 
 
                     responseCallback.success(userToken);
@@ -321,26 +325,29 @@ public class Service {
 
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
 
     }
 
-
-
-
-    public void getCourses(int id, final ResponseCallback<ArrayList<Course>> responseCallback) {
+    /**
+     *
+     * @param id
+     * @param responseCallback
+     */
+    public void getCourses(int id, final ResponseCallback<ArrayList<CourseDTO>> responseCallback) {
         HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/course/" + id);
-      //getRequest.addHeader("Content-Type", "application/json");
+        //getRequest.addHeader("Content-Type", "application/json");
 
 
         this.connectionImpl.execute(getRequest, new ResponseParser() {
             public void payload(String json) {
                 String decryptedJSON = Digester.decrypt(json);
 
-                ArrayList<Course> courses = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<Course>>(){}.getType());
+                ArrayList<CourseDTO> courses = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<CourseDTO>>() {
+                }.getType());
 
 
                 responseCallback.success(courses);
@@ -352,8 +359,6 @@ public class Service {
         });
 
     }
-
-
 
 
 }

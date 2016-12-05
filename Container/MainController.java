@@ -1,8 +1,7 @@
-package logic;
+package controller;
 
-import encrypter.Digester;
 import sdk.connection.ResponseCallback;
-import sdk.models.User;
+import sdk.models.UserDTO;
 import sdk.service.Service;
 
 import java.util.InputMismatchException;
@@ -44,7 +43,7 @@ public class MainController {
 
                 case 1:
 
-                    final User user = new User();
+                    final UserDTO user = new UserDTO();
 
 
                     System.out.println("Type in your CBS mail");
@@ -59,13 +58,13 @@ public class MainController {
 
                     try {
 
-                        service.authLogin(username, password, new ResponseCallback<User>() {
-                            public void success(User data) {
+                        service.authLogin(username, password, new ResponseCallback<UserDTO>() {
+                            public void success(UserDTO data) {
 
                                 if (data != null) {
-                                    System.out.println("User type: " + data.getType());
+                                    System.out.println("UserDTO type: " + data.getType());
                                     if (data.getType().equals("student") ) {
-                                        System.out.println("Loading User menu");
+                                        System.out.println("Loading UserDTO menu");
 
                                         try {
                                             Thread.sleep(2000);
@@ -79,7 +78,7 @@ public class MainController {
                                         UserController userController = new UserController(service, data, inputReader);
                                         userController.userMenu();
                                     } else if (data.getType().equals("admin")) {
-                                        System.out.println("Loading Admin User" + user.getType());
+                                        System.out.println("Loading Admin UserDTO" + user.getType());
 
                                         try {
                                             Thread.sleep(2000);

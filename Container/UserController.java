@@ -1,10 +1,8 @@
-package logic;
+package controller;
 import sdk.connection.ResponseCallback;
 import sdk.models.*;
 import sdk.service.Service;
 
-import java.lang.reflect.Array;
-import java.nio.channels.Pipe;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -17,9 +15,9 @@ public class UserController {
 
     private Service service;
     private Scanner inputReader;
-    private User user;
+    private UserDTO user;
 
-    public UserController(Service service, User user, Scanner inputReader) {
+    public UserController(Service service, UserDTO user, Scanner inputReader) {
         this.service = service;
         this.user = user;
         this.inputReader = inputReader;
@@ -29,7 +27,7 @@ public class UserController {
 
 
     public void userMenu() {
-        System.out.println("====== User menu ======");
+        System.out.println("====== UserDTO menu ======");
         System.out.println();
         System.out.println("(1) - Show all lectures");
         System.out.println("(2) - Show attended courses");
@@ -46,9 +44,9 @@ public class UserController {
             switch (choice) {
                 case 1:
 
-                    service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<Lecture>>() {
-                        public void success(ArrayList<Lecture> data) {
-                            for (Lecture lecture : data) {
+                    service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<LectureDTO>>() {
+                        public void success(ArrayList<LectureDTO> data) {
+                            for (LectureDTO lecture : data) {
                                 System.out.println();
                                 System.out.println("Fag: " + lecture.getDescription());
                                 System.out.println("Type: " + lecture.getType());
@@ -64,15 +62,15 @@ public class UserController {
                         }
                     });
                     /*
-                    service.getCourses(user.getId(), new ResponseCallback<ArrayList<Course>>() {
+                    service.getCourses(user.getId(), new ResponseCallback<ArrayList<CourseDTO>>() {
 
-                        public void success(ArrayList<Course> data) {
+                        public void success(ArrayList<CourseDTO> data) {
 
-                            ArrayList<Course> courseArrayList = new ArrayList<Course>();
+                            ArrayList<CourseDTO> courseArrayList = new ArrayList<CourseDTO>();
 
 
-                            for (Course course : data) {
-                                Course courses = new Course();
+                            for (CourseDTO course : data) {
+                                CourseDTO courses = new CourseDTO();
 
                                 courses.setDisplaytext(course.getDisplaytext());
 
@@ -82,13 +80,13 @@ public class UserController {
 
                             }
 
-                            for (Course courseslist : courseArrayList) {
+                            for (CourseDTO courseslist : courseArrayList) {
 
 
-                                service.getAllLectures(courseslist.getDisplaytext(), new ResponseCallback<ArrayList<Lecture>>() {
-                                    public void success(ArrayList<Lecture> data) {
+                                service.getAllLectures(courseslist.getDisplaytext(), new ResponseCallback<ArrayList<LectureDTO>>() {
+                                    public void success(ArrayList<LectureDTO> data) {
 
-                                        for (Lecture lecture : data) {
+                                        for (LectureDTO lecture : data) {
                                             System.out.println();
                                             System.out.println("Fag: " + lecture.getDescription());
                                             System.out.println("Type: " + lecture.getType());
@@ -129,14 +127,14 @@ public class UserController {
 
                     int userID = user.getId();
 
-                    service.getCourses(userID, new ResponseCallback<ArrayList<Course>>() {
-                        public void success(ArrayList<Course> data) {
+                    service.getCourses(userID, new ResponseCallback<ArrayList<CourseDTO>>() {
+                        public void success(ArrayList<CourseDTO> data) {
 
-                            for (Course course : data) {
+                            for (CourseDTO course : data) {
                                 System.out.println();
                                 System.out.println("Displaytext: " + course.getDisplaytext());
                                 System.out.println("course ID " + course.getId());
-                                System.out.println("Lecture name: " + course.getCode());
+                                System.out.println("LectureDTO name: " + course.getCode());
                                 System.out.println();
 
 
@@ -161,12 +159,12 @@ public class UserController {
 
 
                     try {
-                        service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<Lecture>>() {
-                            public void success(ArrayList<Lecture> data) {
+                        service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<LectureDTO>>() {
+                            public void success(ArrayList<LectureDTO> data) {
 
-                                for (Lecture lectures : data) {
+                                for (LectureDTO lectures : data) {
                                     System.out.println();
-                                    System.out.println("Lecture: " + lectures.getDescription());
+                                    System.out.println("LectureDTO: " + lectures.getDescription());
                                     System.out.println("Date: " + lectures.getStartDate());
                                     System.out.println("id: " + lectures.getId());
                                     System.out.println();
@@ -185,7 +183,7 @@ public class UserController {
                         System.out.println("Something went wrong, when trying to GET lectures");
                     }
 
-                    Review review = new Review();
+                    ReviewDTO review = new ReviewDTO();
 
                     System.out.println("Type in a lecture ID");
                     int lectureID = inputReader.nextInt();
@@ -237,7 +235,7 @@ public class UserController {
                     service.addReview(review, new ResponseCallback<String>() {
 
                         public void success(String data) {
-                            System.out.println("Review succesfully added");
+                            System.out.println("ReviewDTO succesfully added");
                             userMenu();
                         }
 
@@ -250,10 +248,10 @@ public class UserController {
                     break;
 
                 case 4:
-                    service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<Lecture>>() {
-                        public void success(ArrayList<Lecture> data) {
-                            for (Lecture lecture:data) {
-                                System.out.println("Lecture ID: " + lecture.getId());
+                    service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<LectureDTO>>() {
+                        public void success(ArrayList<LectureDTO> data) {
+                            for (LectureDTO lecture:data) {
+                                System.out.println("LectureDTO ID: " + lecture.getId());
                             }
                         }
 
@@ -263,20 +261,20 @@ public class UserController {
                     });
 
                     System.out.println();
-                    System.out.println("Type in the ID of the Lecture, you wish to view reviews for.");
+                    System.out.println("Type in the ID of the LectureDTO, you wish to view reviews for.");
 
                     int ReviewID = inputReader.nextInt();
 
                     try {
 
-                        service.getAllReviews(ReviewID, new ResponseCallback<ArrayList<Review>>() {
-                            public void success(ArrayList<Review> data) {
-                                for (Review reviews : data) {
+                        service.getAllReviews(ReviewID, new ResponseCallback<ArrayList<ReviewDTO>>() {
+                            public void success(ArrayList<ReviewDTO> data) {
+                                for (ReviewDTO reviews : data) {
 
 
                                     System.out.println();
                                     System.out.println("Comment: " + reviews.getComment());
-                                    System.out.println("Lecture ID: " + reviews.getLectureId());
+                                    System.out.println("LectureDTO ID: " + reviews.getLectureId());
                                     System.out.println("Rating: " + reviews.getRating());
                                     System.out.println();
 
@@ -298,7 +296,7 @@ public class UserController {
 
                 case 5:
 
-                    Review deleteReview = new Review();
+                    ReviewDTO deleteReview = new ReviewDTO();
 
                     System.out.println("Type in the ID of the review, you wish to delete:");
                     int deleteReviewID = inputReader.nextInt();
@@ -309,7 +307,7 @@ public class UserController {
                     service.updateReview(deleteReview, new ResponseCallback<Boolean>() {
                         public void success(Boolean data) {
                             System.out.println(data);
-                            System.out.println("Review softdeleted");
+                            System.out.println("ReviewDTO softdeleted");
                         }
 
                         public void error(int status) {
@@ -324,7 +322,7 @@ public class UserController {
 
                 case 6:
 
-                    Review reviewcomment = new Review();
+                    ReviewDTO reviewcomment = new ReviewDTO();
 
                     System.out.println("Type in the ID of the review");
                     int reviewsID = inputReader.nextInt();

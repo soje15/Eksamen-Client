@@ -1,4 +1,4 @@
-package logic;
+package controller;
 
 import sdk.connection.ResponseCallback;
 import sdk.models.*;
@@ -15,9 +15,9 @@ public class AdminController {
 
     private Service service;
     private Scanner inputReader;
-    private User user;
+    private UserDTO user;
 
-    public AdminController(Service service, User user, Scanner inputReader) {
+    public AdminController(Service service, UserDTO user, Scanner inputReader) {
         this.service = service;
         this.user = user;
         this.inputReader = inputReader;
@@ -39,7 +39,7 @@ public class AdminController {
             case 1:
 
                 Scanner inputReader2 = new Scanner(System.in);
-                Review deleteReview = new Review();
+                ReviewDTO deleteReview = new ReviewDTO();
 
                 System.out.println("Type in the ID of the review, you wish to delete:");
                 int deleteReviewID = inputReader.nextInt();
@@ -53,7 +53,7 @@ public class AdminController {
                 service.updateReview(deleteReview, new ResponseCallback<Boolean>() {
                     public void success(Boolean data) {
                         System.out.println(data);
-                        System.out.println("Review softdeleted");
+                        System.out.println("ReviewDTO softdeleted");
                     }
 
                     public void error(int status) {
@@ -78,7 +78,7 @@ public class AdminController {
                 System.out.println("Type in the ID of the user");
                 int userReviewID = inputReader.nextInt();
 
-                Review deleteReviewComment = new Review();
+                ReviewDTO deleteReviewComment = new ReviewDTO();
 
                 deleteReviewComment.setId(reviewID);
                 deleteReviewComment.setUserId(userReviewID);

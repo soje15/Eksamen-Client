@@ -5,13 +5,13 @@ package sdk.models;
  */
 
 //
-public class Course{
+public class CourseDTO {
 
     private String id;
     private String code;
     private String displaytext;
 
-    public Course() {
+    public CourseDTO() {
 
     }
 

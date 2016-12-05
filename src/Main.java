@@ -1,6 +1,6 @@
-import logic.ConfigLoader;
+import controller.ConfigLoader;
 import sdk.service.Service;
-import logic.MainController;
+//import controller.MainController;
 
 import java.util.Scanner;
 
@@ -19,6 +19,7 @@ import java.util.Scanner;
  DONE K09 :  Klient skal stille et UI til rådighed for brugeren
  */
 
+/*
 
 public class Main {
     public static void main(String[] args) {
@@ -32,3 +33,4 @@ public class Main {
 
     }
 }
+*/

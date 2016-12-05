@@ -3,7 +3,7 @@ package sdk.models;
 /**
  * Created by sorenkolbyejensen on 18/11/2016.
  */
-public class Review {
+public class ReviewDTO {
 
     private int id;
     private int userId;

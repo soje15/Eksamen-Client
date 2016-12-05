@@ -3,14 +3,14 @@ package sdk.models;
 /**
  * Created by sorenkolbyejensen on 14/11/2016.
  */
-public class User{
+public class UserDTO {
 
     private int id;
     private String cbsMail;
     private String password;
     private String type;
 
-    public User() {
+    public UserDTO() {
     }
 
 

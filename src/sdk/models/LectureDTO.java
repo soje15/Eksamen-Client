@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by sorenkolbyejensen on 14/11/2016.
  */
-public class Lecture{
+public class LectureDTO {
 
     private int id;
     private int courseId;
@@ -20,13 +20,13 @@ public class Lecture{
     private String location;
 
 
-    //Course & User er implementeret i Books requested, derfor skal det med her.
+    //CourseDTO & UserDTO er implementeret i Books requested, derfor skal det med her.
 
 
-    public Lecture() {
+    public LectureDTO() {
     }
 
-    private User teacher;
+    private UserDTO teacher;
 
     public int getId() {
         return id;
@@ -100,11 +100,11 @@ public class Lecture{
         this.location = location;
     }
 
-    public User getTeacher() {
+    public UserDTO getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(User teacher) {
+    public void setTeacher(UserDTO teacher) {
         this.teacher = teacher;
     }
 }
