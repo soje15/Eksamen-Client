@@ -71,13 +71,13 @@ public class UserView {
                     userTestController.showReviewsOnLecture();
 
                 case 5:
-                  userTestController.softDeleteReview();
+                  userTestController.softDeleteReview(user.getId());
 
 
                     break;
 
                 case 6:
-                    userTestController.deleteReviewComment();
+                    userTestController.deleteReviewComment(user.getId());
 
 
 

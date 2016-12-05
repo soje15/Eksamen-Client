@@ -25,6 +25,10 @@ public class UserTestController {
         this.viewHandler = viewHandler;
     }
 
+    public static void main(String[] args) {
+
+    }
+
     /**
      *
      */
@@ -248,7 +252,28 @@ public class UserTestController {
      */
 
 
-    public void softDeleteReview() {
+    public void softDeleteReview(int userId) {
+
+        service.getReviews(userId, new ResponseCallback<ArrayList<ReviewDTO>>() {
+            public void success(ArrayList<ReviewDTO> data) {
+
+                for (ReviewDTO reviews: data) {
+                    System.out.println();
+                    System.out.println("Lecture ID : " + reviews.getLectureId());
+                    System.out.println("Comment: " + reviews.getComment());
+                    System.out.println("Rating: " + reviews.getRating());
+                    System.out.println("Review ID: " + reviews.getId());
+                    System.out.println();
+
+
+                }
+            }
+
+            public void error(int status) {
+                System.out.println(status + "Could not get reviews");
+
+            }
+        });
 
         ReviewDTO deleteReview = new ReviewDTO();
 
@@ -279,7 +304,25 @@ public class UserTestController {
      */
 
 
-    public void deleteReviewComment() {
+    public void deleteReviewComment(int userId) {
+
+        service.getReviews(userId, new ResponseCallback<ArrayList<ReviewDTO>>() {
+            public void success(ArrayList<ReviewDTO> data) {
+
+                for (ReviewDTO reviews: data) {
+                    System.out.println();
+                    System.out.println("Lecture ID : " + reviews.getLectureId());
+                    System.out.println("Comment: " + reviews.getComment());
+                    System.out.println("Review ID: " + reviews.getId());
+                    System.out.println();
+                }
+            }
+
+            public void error(int status) {
+                System.out.println(status + "Could not get reviews");
+
+            }
+        });
 
         ReviewDTO reviewcomment = new ReviewDTO();
 

@@ -1,5 +1,6 @@
 package sdk.service;
 
+import controller.UserTestController;
 import encrypter.Digester;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,6 +29,21 @@ public class Service {
     public Service() {
         this.connectionImpl = new ConnectionImpl();
         this.gson = new Gson();
+    }
+
+    public static void main(String[] args) {
+   Service service = new Service();
+        service.getReviews(6, new ResponseCallback<ArrayList<ReviewDTO>>() {
+            public void success(ArrayList<ReviewDTO> data) {
+                for(ReviewDTO reviews: data) {
+                    System.out.println(reviews.getComment());
+                }
+            }
+
+            public void error(int status) {
+
+            }
+        });
     }
 
 
@@ -351,6 +367,33 @@ public class Service {
 
 
                 responseCallback.success(courses);
+            }
+
+            public void error(int status) {
+                responseCallback.error(status);
+            }
+        });
+
+    }
+
+
+    public void getReviews(int userId, final ResponseCallback<ArrayList<ReviewDTO>> responseCallback) {
+        System.out.println(userId);
+
+        HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/student/getReviews/" + userId);
+        System.out.println(ConnectionImpl.serverURL + "/student/getReviews/" + userId);
+
+
+        this.connectionImpl.execute(getRequest, new ResponseParser() {
+
+            public void payload(String json) {
+                String decryptedJSON = Digester.decrypt(json);
+
+                ArrayList<ReviewDTO> reviews = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<ReviewDTO>>() {
+                }.getType());
+
+
+                responseCallback.success(reviews);
             }
 
             public void error(int status) {
