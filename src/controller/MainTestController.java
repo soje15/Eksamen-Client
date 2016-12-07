@@ -44,7 +44,7 @@ public class MainTestController {
 
         try {
 
-            service.authLogin(username, password, new ResponseCallback<UserDTO>() {
+            service.Login(username, password, new ResponseCallback<UserDTO>() {
                 public void success(UserDTO data) {
 
                     if (data != null) {

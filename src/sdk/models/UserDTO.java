@@ -2,6 +2,7 @@ package sdk.models;
 
 /**
  * Created by sorenkolbyejensen on 14/11/2016.
+ * Our UserdTO, containing variables which mirrors the server.
  */
 public class UserDTO {
 

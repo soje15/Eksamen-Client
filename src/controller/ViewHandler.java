@@ -6,6 +6,9 @@ import view.MainView;
 
 /**
  * Created by sorenkolbyejensen on 30/11/2016.
+ *
+ * Our viewhandler serves to handle the applications views.
+ * So that it may be retrieved from any point in the application.
  */
 public class ViewHandler {
 

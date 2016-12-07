@@ -10,6 +10,9 @@ import java.util.Scanner;
 
 /**
  * Created by sorenkolbyejensen on 15/11/2016.
+ * Our AdminView class contains the fundamental "backbone" of the
+ * TUI.
+ *
  */
 public class AdminView {
 
@@ -20,6 +23,13 @@ public class AdminView {
     private AdminTestController adminTestController;
     private UserDTO user;
 
+    /**
+     *
+     * @param service
+     * @param user
+     * @param inputReader
+     * @param viewHandler
+     */
     public AdminView(Service service, UserDTO user, Scanner inputReader, ViewHandler viewHandler) {
         this.service = service;
         this.user = user;

@@ -18,6 +18,13 @@ public class UserView {
     private UserTestController userTestController;
     private UserDTO user;
 
+    /**
+     *
+     * @param service
+     * @param user
+     * @param inputReader
+     * @param viewHandler
+     */
     public UserView(Service service, UserDTO user, Scanner inputReader, ViewHandler viewHandler) {
         this.service = service;
         this.user = user;

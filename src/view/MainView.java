@@ -21,7 +21,12 @@ public class MainView {
     private String password;
 
 
-
+    /**
+     *
+     * @param service
+     * @param inputReader
+     * @param viewHandler
+     */
     public MainView(Service service, Scanner inputReader, ViewHandler viewHandler) {
         this.service = service;
         this.inputReader = inputReader;

@@ -33,7 +33,7 @@ public class UserTestController {
      *
      */
     public void showAllLectures() {
-        service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<LectureDTO>>() {
+        service.getAllLecturesFromUserID(user.getId(), new ResponseCallback<ArrayList<LectureDTO>>() {
             public void success(ArrayList<LectureDTO> data) {
                 for (LectureDTO lecture : data) {
                     System.out.println();
@@ -98,7 +98,7 @@ public class UserTestController {
 
 
         try {
-            service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<LectureDTO>>() {
+            service.getAllLecturesFromUserID(user.getId(), new ResponseCallback<ArrayList<LectureDTO>>() {
                 public void success(ArrayList<LectureDTO> data) {
 
                     for (LectureDTO lectures : data) {
@@ -200,10 +200,13 @@ public class UserTestController {
 
     public void showReviewsOnLecture() {
 
-        service.getAllLecturesByUserID(user.getId(), new ResponseCallback<ArrayList<LectureDTO>>() {
+        service.getAllLecturesFromUserID(user.getId(), new ResponseCallback<ArrayList<LectureDTO>>() {
             public void success(ArrayList<LectureDTO> data) {
                 for (LectureDTO lecture : data) {
-                    System.out.println("LectureDTO ID: " + lecture.getId());
+                    System.out.println();
+                    System.out.println("Lecture Description: " + lecture.getDescription());
+                    System.out.println("Lecture Date: " + lecture.getEndDate());
+                    System.out.println("Lecture ID: " + lecture.getId());
                 }
             }
 
@@ -213,7 +216,7 @@ public class UserTestController {
         });
 
         System.out.println();
-        System.out.println("Type in the ID of the LectureDTO, you wish to view reviews for.");
+        System.out.println("Type in the ID of the lecture, you wish to view reviews for.");
 
         int ReviewID = inputReader.nextInt();
 

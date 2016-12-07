@@ -18,6 +18,28 @@ import java.util.ArrayList;
 
 /**
  * Created by sorenkolbyejensen on 14/11/2016.
+ *
+ * This service class, has the job to prepare HTTP-requests to the server. It does so, with the following interfaces:
+ * 1. ResponseCallBack
+ * 2. ResponseParser
+ *
+ * Aswell as the apache HTTPclient library, to prepare the requests.
+ *
+ * The class contains the following functions:
+ *
+ * updateReview
+ * deleteReview
+ * GetAllLecture
+ * GetAllLectureByID
+ * getReviews
+ * getCourses
+ * authLogin
+ * getAllReviews
+ *
+ *
+ * Much of the code in this class is repeated, and thus it will only be commented once.
+ * A reference to a similar method with comments, will be provided when needed.
+ *
  */
 
 
@@ -26,11 +48,19 @@ public class Service {
     private Gson gson;
     private Digester digester;
 
+
+    /**
+     *Initializing our connection and gson-serializer.
+     */
     public Service() {
         this.connectionImpl = new ConnectionImpl();
         this.gson = new Gson();
     }
 
+
+    /**
+     * Main used for testing purposes.
+     */
     public static void main(String[] args) {
    Service service = new Service();
         service.getReviews(6, new ResponseCallback<ArrayList<ReviewDTO>>() {
@@ -47,45 +77,63 @@ public class Service {
     }
 
 
-    //review/{lectureId}
 
 
 
     /**
+     *This function, will parse a review object with an empty password.
+     * Using a putRequests, in order to manipulate data on the server.
      *
+     * The function takes the following parameters:
      * @param review
      * @param responseCallback
      */
     public void deleteReviewComment(ReviewDTO review, final ResponseCallback<Boolean> responseCallback) {
 
         try {
+
+            //We define which type of requests we wish. In this case it is a put request.
             HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/student/reviewcomment/");
+
+            //json is added to the header, so the server knows it is getting it in JSON-format.
             putRequest.addHeader("Content-Type", "application/json");
 
+            //Converting our object to an entity, that can be sent to the server.
             StringEntity jsonReview = new StringEntity(gson.toJson(review));
             putRequest.setEntity(jsonReview);
 
+            //Request is executed
             connectionImpl.execute(putRequest, new ResponseParser() {
 
+                //Json recieved in payload.
                 public void payload(String json) {
+
+                    //Json decrypted.
                     String decryptedJSON = Digester.decrypt(json);
 
+                    //We set what we expect to recieve from the server (a Boolean)
+                    //And use gson, to convert our json to java-language.
                     Boolean isDeleted = gson.fromJson(decryptedJSON, Boolean.class);
 
-                    System.out.println(isDeleted);
 
+                    //call sucessmethod, upon sucessful transaction.
                     responseCallback.success(isDeleted);
 
 
                 }
 
+
+                //call error method, upon unsucessful transaction.
                 public void error(int status) {
                     responseCallback.error(status);
                 }
 
 
             });
+
+            //Exception caught
         } catch (Exception e) {
+            e.printStackTrace();
 
         }
 
@@ -94,6 +142,9 @@ public class Service {
 
 
     /**
+     *This method serves to update a review.
+     *- Please refer to "deleteReviewComment" for further
+     * code comments.
      *
      * @param review
      * @param responseCallback
@@ -115,7 +166,6 @@ public class Service {
 
                     Boolean isDeleted = gson.fromJson(decryptedJSON, Boolean.class);
 
-                    System.out.println(isDeleted);
 
                     responseCallback.success(isDeleted);
 
@@ -129,6 +179,7 @@ public class Service {
 
             });
         } catch (Exception e) {
+            e.printStackTrace();
 
         }
 
@@ -136,6 +187,10 @@ public class Service {
     }
 
     /**
+     *This method serves to delete a review.
+     * Since the purpose is actually "softdeleting"
+     * a put request is used.
+     *
      *
      * @param userid
      * @param reviewID
@@ -167,6 +222,10 @@ public class Service {
     }
 
     /**
+     *
+     * This method serves to add a review on the server
+     * A post request is used in this instance, since
+     * we wish to add something.
      *
      * @param review
      * @param responseCallback
@@ -202,6 +261,7 @@ public class Service {
 
 
         } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
 
         }
 
@@ -242,11 +302,13 @@ public class Service {
 */
 
     /**
+     *Returns all lectures from  users ID.
+     *
      *
      * @param userID
      * @param responseCallback
      */
-    public void getAllLecturesByUserID(Integer userID, final ResponseCallback<ArrayList<LectureDTO>> responseCallback) {
+    public void getAllLecturesFromUserID(Integer userID, final ResponseCallback<ArrayList<LectureDTO>> responseCallback) {
 
         HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/lectureByID/" + userID);
 
@@ -257,7 +319,8 @@ public class Service {
 
                 String decryptedJSON = Digester.decrypt(json);
 
-                //TypeToken anvendes, fordi den ellers ikke forstår at den skal bruge LectureDTO klassen.
+                //Type token is used, so that GSON can understand that it needs to make an array
+                //containing Lecture-objects.
                 ArrayList<LectureDTO> lectures = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<LectureDTO>>() {
                 }.getType());
 
@@ -300,11 +363,15 @@ public class Service {
 
     /**
      *
+     * This method allows users to use the "login" method.
+     * it returns certain user paramters, upon sucessfull transaction.
+     * which is then used, to authenticate the user on client-level.
+     *
      * @param cbsMail
      * @param password
      * @param responseCallback
      */
-    public void authLogin(String cbsMail, String password, final ResponseCallback<UserDTO> responseCallback) {
+    public void Login(String cbsMail, String password, final ResponseCallback<UserDTO> responseCallback) {
         HttpPost postRequest = new HttpPost(ConnectionImpl.serverURL + "/login");
 
         String doubleHashedPassword = Digester.hashWithSalt(Digester.hashWithSalt(password));
@@ -349,12 +416,12 @@ public class Service {
     }
 
     /**
-     *
-     * @param id
+     *This function returns all courses from a userID.
+     * @param userId
      * @param responseCallback
      */
-    public void getCourses(int id, final ResponseCallback<ArrayList<CourseDTO>> responseCallback) {
-        HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/course/" + id);
+    public void getCourses(int userId, final ResponseCallback<ArrayList<CourseDTO>> responseCallback) {
+        HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/course/" + userId);
         //getRequest.addHeader("Content-Type", "application/json");
 
 
@@ -376,6 +443,11 @@ public class Service {
 
     }
 
+    /**
+     * This function returns all reviews, belonging to a specific userID.
+     * @param userId
+     * @param responseCallback
+     */
 
     public void getReviews(int userId, final ResponseCallback<ArrayList<ReviewDTO>> responseCallback) {
         System.out.println(userId);

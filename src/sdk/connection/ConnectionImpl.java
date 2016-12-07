@@ -13,11 +13,27 @@ import java.io.IOException;
 
 public class ConnectionImpl {
 
-    //Server URL defineret som statisk felt-variabel
+  /**
+   * This "ConnectionImpl" class, has the job of creating our HTTP-client
+   * and overall, handling our connection to the server.
+   *
+   * It thus contains our execute method, which will execute the prepared HTTP-requests.
+   * Furthermore, it contains our Responsehandler, which will handle any sucessful or
+   * unsucessful transactions between the client & the server.
+   *
+   * Credit goes to Jesper Bruun Hansen, for assistance in creating this class.
+   */
+
+  //SERVER URL defined as a static variable.
   public static String serverURL = "http://localhost:6112/api";
 
-  private CloseableHttpClient httpClient;
 
+
+
+  /**
+   * HTTP client is created.
+   */
+  private CloseableHttpClient httpClient;
 
   public ConnectionImpl(){
     this.httpClient = HttpClients.createDefault();
@@ -25,29 +41,35 @@ public class ConnectionImpl {
 
 
   /**
-   * Laver et kald på serveren, og venter på at serveren giver et svar tilbage.
+   * This function will execute a request to the server and await response.
+   * It is thus used in our service-class.
    * @param uriRequest
    * @param parser
    */
   public void execute(HttpUriRequest uriRequest, final ResponseParser parser){
 
-    // Create a custom response handler
+
+
+    // A custom responsehandler is created.
     ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
 
       public String handleResponse(final HttpResponse response) throws IOException {
+
+        //Statuscode from response gets allocated to our status variable.
         int status = response.getStatusLine().getStatusCode();
 
-
-
-          //Execute metoden kigger på om status på serveren er mellem 200/300. Da alt over 400/500 betyder der skete en
-          //Fejl i http protokollen.
+        //This if-statement, serves to check if the HTTP code is within the accepted spectrum
+        //200-300 generally means, that connection was made successfully
+        //400-500 generally means, that something went wrong in the HTTP protocol.
         if (status >= 200 && status < 300) {
           System.out.println("Connected to " + serverURL);
-            //Returnere en entity
+
+          //Returns HTTP entity. (Entities are in this context,
+          //Entities that can be recieved or sent with a HTTP message.
           HttpEntity entity = response.getEntity();
           return entity != null ? EntityUtils.toString(entity) : null;
         } else {
-          //Handle error
+          //Handle error to parser
             parser.error(status);
         }
         return null;
@@ -55,12 +77,20 @@ public class ConnectionImpl {
 
     };
 
+
+    /**
+     * Client will attempt to execute request and allocate it to a string.
+     */
     try {
 
-        //Her returneres vores JSON til klienten.
+        //Attempt to execute requests and allocate it to a string.
       String json = this.httpClient.execute(uriRequest, responseHandler);
 
+      // Payload method will only be cast, if a JSON string is returned.
+      if(json != null){
         parser.payload(json);
+      }
+
 
 
     } catch (IOException e) {

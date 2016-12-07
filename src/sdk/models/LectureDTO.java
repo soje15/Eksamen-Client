@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * Created by sorenkolbyejensen on 14/11/2016.
+ *
+ * Our LectureDTO, containing variables which mirrors the server.
  */
 public class LectureDTO {
 
@@ -18,10 +20,6 @@ public class LectureDTO {
     private Date startDate;
     private Date endDate;
     private String location;
-
-
-    //CourseDTO & UserDTO er implementeret i Books requested, derfor skal det med her.
-
 
     public LectureDTO() {
     }
