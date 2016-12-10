@@ -166,23 +166,78 @@ public class Service {
 
                     Boolean isDeleted = gson.fromJson(decryptedJSON, Boolean.class);
 
-
                     responseCallback.success(isDeleted);
 
-
                 }
-
                 public void error(int status) {
                     responseCallback.error(status);
                 }
 
-
             });
         } catch (Exception e) {
             e.printStackTrace();
-
         }
+    }
 
+    /**
+     * Gets all reviews from the server.
+     *
+     * @param lectureId
+     * @param responseCallback
+     */
+
+    public void getAllReviews(Integer lectureId, final ResponseCallback<ArrayList<ReviewDTO>> responseCallback) {
+
+        HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/review/" + lectureId);
+
+
+        this.connectionImpl.execute(getRequest, new ResponseParser() {
+
+            public void payload(String json) {
+                String decryptedJSON = Digester.decrypt(json);
+
+                ArrayList<ReviewDTO> reviews = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<ReviewDTO>>() {
+                }.getType());
+
+                responseCallback.success(reviews);
+
+
+            }
+
+            public void error(int status) {
+                responseCallback.error(status);
+            }
+        });
+
+    }
+
+
+    /**
+     * This method is meant for admin users, to return reviews with UserID.
+     * So that the admin may delete any review from any user.
+     * @param responseCallback
+     */
+    public void getAllReviewsInclUserId(final ResponseCallback<ArrayList<ReviewDTO>> responseCallback){
+        HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/admin/getReviews/");
+
+
+        this.connectionImpl.execute(getRequest, new ResponseParser() {
+
+            public void payload(String json) {
+                String decryptedJSON = Digester.decrypt(json);
+
+                ArrayList<ReviewDTO> reviews = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<ReviewDTO>>() {
+                }.getType());
+
+                responseCallback.success(reviews);
+
+
+            }
+
+            public void error(int status) {
+                responseCallback.error(status);
+            }
+        });
 
     }
 
@@ -336,36 +391,13 @@ public class Service {
 
     }
 
-    public void getAllReviews(Integer lectureId, final ResponseCallback<ArrayList<ReviewDTO>> responseCallback) {
 
-        HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/review/" + lectureId);
-
-
-        this.connectionImpl.execute(getRequest, new ResponseParser() {
-
-            public void payload(String json) {
-                String decryptedJSON = Digester.decrypt(json);
-
-                ArrayList<ReviewDTO> reviews = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<ReviewDTO>>() {
-                }.getType());
-
-                responseCallback.success(reviews);
-
-
-            }
-
-            public void error(int status) {
-                responseCallback.error(status);
-            }
-        });
-
-    }
 
     /**
      *
      * This method allows users to use the "login" method.
      * it returns certain user paramters, upon sucessfull transaction.
-     * which is then used, to authenticate the user on client-level.
+     *
      *
      * @param cbsMail
      * @param password
@@ -466,6 +498,30 @@ public class Service {
 
 
                 responseCallback.success(reviews);
+            }
+
+            public void error(int status) {
+                responseCallback.error(status);
+            }
+        });
+
+    }
+
+
+    public void getCourseParticipants(int courseId, final ResponseCallback<Integer> responseCallback) {
+
+        HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/teacher/courseParticipants/" + courseId);
+        System.out.println(ConnectionImpl.serverURL + "/teacher/courseParticipants/" + courseId);
+
+
+        this.connectionImpl.execute(getRequest, new ResponseParser() {
+
+            public void payload(String json) {
+                String decryptedJSON = Digester.decrypt(json);
+
+               Integer courseParticipants = gson.fromJson(decryptedJSON, Integer.class);
+
+                responseCallback.success(courseParticipants);
             }
 
             public void error(int status) {

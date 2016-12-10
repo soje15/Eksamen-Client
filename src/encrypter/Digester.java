@@ -8,10 +8,11 @@ import java.security.MessageDigest;
 
 
 
-/*
-
-Følgende klasse er udarbejdet i fællesskab i undervisnings-evaluerings gruppen.
-
+/**
+ *
+ * Digester used for hashing aswell as encryption
+ *
+ * Credit goes to the entirety of the "Undervisnings-evaluerings" team.
  */
 public class Digester {
 

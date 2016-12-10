@@ -1,9 +1,11 @@
 package view;
 
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import controller.MainTestController;
 import controller.ViewHandler;
 import sdk.service.Service;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -34,10 +36,13 @@ public class MainView {
 
         MainTestController maintestController = new MainTestController(service, inputReader, viewHandler);
         this.maintestController = maintestController;
-
-       // MainMenu();
     }
 
+
+    /**
+     * MainMenu - case switch to choose.
+     *
+     */
     public void MainMenu() {
 
         System.out.println("Main menu");
@@ -60,8 +65,10 @@ public class MainView {
                     System.exit(0);
 
             }
-        }catch  (Exception e) {
-            e.printStackTrace();
+        }catch  (InputMismatchException e) {
+
+            System.out.println("Please type in a valid input.");
+           MainMenu();
         }
     }
 }

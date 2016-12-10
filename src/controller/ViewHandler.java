@@ -1,6 +1,7 @@
 package controller;
 
 import view.AdminView;
+import view.TeacherView;
 import view.UserView;
 import view.MainView;
 
@@ -15,6 +16,7 @@ public class ViewHandler {
     private MainView mainView;
     private UserView userView;
     private AdminView adminView;
+    private TeacherView teacherView;
 
 
     /**
@@ -22,6 +24,13 @@ public class ViewHandler {
      * @return
      */
 
+    public TeacherView getTeacherView() {
+        return teacherView;
+    }
+
+    public void setTeacherView(TeacherView teacherView) {
+        this.teacherView = teacherView;
+    }
 
     public MainView getMainView() {
         return mainView;

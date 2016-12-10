@@ -1,10 +1,12 @@
 package controller;
 
+import com.sun.tools.doclets.internal.toolkit.util.DocFinder;
 import sdk.connection.ResponseCallback;
 import sdk.models.UserDTO;
 import sdk.service.Service;
 import view.*;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -26,8 +28,9 @@ public class MainTestController {
         this.viewHandler = viewHandler;
     }
 
-    /***
-
+    /**
+     * Login method, which loads either the user or admin menu upon succesful
+     * login
      */
 
     public void login() {
@@ -45,28 +48,12 @@ public class MainTestController {
         try {
 
             service.Login(username, password, new ResponseCallback<UserDTO>() {
-                public void success(UserDTO data) {
+                public void success(UserDTO user) {
 
-                    if (data != null) {
-                        System.out.println("UserDTO type: " + data.getType());
-                        if (data.getType().equals("student")) {
-                            System.out.println("Loading UserDTO menu");
-
-                            try {
-                                Thread.sleep(2000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                            user.setCbsMail(data.getCbsMail());
-                            user.setType(data.getType());
-
-                            UserView userView = new UserView(service, data, inputReader, viewHandler);
-                            viewHandler.setUserView(userView);
-                            viewHandler.getUserView().userMenu();
-
-                        } else if (data.getType().equals("admin")) {
-                            System.out.println("Loading Admin UserDTO" + user.getType());
+                    if (user != null) {
+                        System.out.println("User type: " + user.getType());
+                        if (user.getType().equals("student")) {
+                            System.out.println("Loading user menu");
 
                             try {
                                 Thread.sleep(100);
@@ -74,14 +61,33 @@ public class MainTestController {
                                 e.printStackTrace();
                             }
 
-                            user.setCbsMail(data.getCbsMail());
-                            user.setType(data.getType());
+
+                            UserView userView = new UserView(service, user, inputReader, viewHandler);
+                            viewHandler.setUserView(userView);
+                            viewHandler.getUserView().userMenu();
+
+                        } else if (user.getType().equals("admin")) {
+                            System.out.println("Loading Admin Menu");
+
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
 
                             AdminView adminView = new AdminView(service, user, inputReader, viewHandler);
                             viewHandler.setAdminView(adminView);
-                            viewHandler.getAdminView().TestMenu();
-                        }
+                            viewHandler.getAdminView().AdminMenu();
 
+                        } else if (user.getType().equals("teacher")){
+                            System.out.println("Loading Teacher Menu");
+
+
+                            TeacherView teacherView = new TeacherView(service, user, inputReader, viewHandler);
+                            viewHandler.setTeacherView(teacherView);
+                            teacherView.teacherMenu();
+
+                        }
 
                     } else {
                         System.out.println("forkert login");
@@ -95,7 +101,8 @@ public class MainTestController {
                 }
             });
         } catch (Exception e) {
-            System.out.println(e);
+           e.printStackTrace();
+            login();
         }
 
 

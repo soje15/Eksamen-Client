@@ -34,15 +34,19 @@ public class AdminView {
         this.service = service;
         this.user = user;
         this.inputReader = inputReader;
-        //   inputReader = new Scanner(System.in);
-
         this.viewHandler = viewHandler;
+
+
         AdminTestController adminTestController = new AdminTestController(service, user, inputReader, viewHandler);
         this.adminTestController = adminTestController;
     }
 
 
-    public void TestMenu(){
+    /**
+     *
+     *
+     */
+    public void AdminMenu(){
 
         System.out.println("====== ADMIN MENU =======");
         System.out.println("");

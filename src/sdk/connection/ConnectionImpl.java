@@ -92,7 +92,9 @@ public class ConnectionImpl {
       }
 
 
-
+/**
+ * Catch any IO-exception and print.
+ */
     } catch (IOException e) {
       e.printStackTrace();
     }

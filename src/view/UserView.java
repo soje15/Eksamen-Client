@@ -38,6 +38,9 @@ public class UserView {
 
     }
 
+    /**
+     * User menu - case switch.
+     */
 
     public void userMenu() {
         System.out.println("====== UserDTO menu ======");
