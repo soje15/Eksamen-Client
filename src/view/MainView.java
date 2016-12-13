@@ -1,7 +1,6 @@
 package view;
 
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
-import controller.MainTestController;
+import controller.MainController;
 import controller.ViewHandler;
 import sdk.service.Service;
 
@@ -15,15 +14,14 @@ public class MainView {
 
 
     private Service service;
-    private MainTestController maintestController;
+    private MainController maintestController;
     private Scanner inputReader;
     private ViewHandler viewHandler;
-    private MainTestController mainTestController;
-    private String username;
-    private String password;
+    private MainController mainController;
 
 
     /**
+     * Constructor, initializing our variables.
      *
      * @param service
      * @param inputReader
@@ -34,7 +32,7 @@ public class MainView {
         this.inputReader = inputReader;
         this.viewHandler = viewHandler;
 
-        MainTestController maintestController = new MainTestController(service, inputReader, viewHandler);
+        MainController maintestController = new MainController(service, inputReader, viewHandler);
         this.maintestController = maintestController;
     }
 

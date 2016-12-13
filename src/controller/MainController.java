@@ -12,7 +12,7 @@ import java.util.Scanner;
 /**
  * Created by sorenkolbyejensen on 15/11/2016.
  */
-public class MainTestController {
+public class MainController {
 
 
     private Service service;
@@ -22,7 +22,7 @@ public class MainTestController {
     private String password;
 
 
-    public MainTestController(Service service, Scanner inputReader, ViewHandler viewHandler) {
+    public MainController(Service service, Scanner inputReader, ViewHandler viewHandler) {
         this.service = service;
         this.inputReader = inputReader;
         this.viewHandler = viewHandler;
@@ -37,6 +37,9 @@ public class MainTestController {
         final UserDTO user = new UserDTO();
 
 
+        /*
+        Type in login information, to pass it to server to be checked in the database.
+         */
         System.out.println("Type in your CBS mail");
         username = inputReader.next();
 
@@ -47,38 +50,35 @@ public class MainTestController {
 
         try {
 
-            service.Login(username, password, new ResponseCallback<UserDTO>() {
+            //Call service login method, with the login information. Implementing ResponesCallBack interface,
+            //To handle callbacks.
+            service.loginUser(username, password, new ResponseCallback<UserDTO>() {
+
+                //On sucessful callback, check the user type and run the appropriate view.
                 public void success(UserDTO user) {
 
+                    //If user is not empty, attempt to get the type.
                     if (user != null) {
                         System.out.println("User type: " + user.getType());
                         if (user.getType().equals("student")) {
                             System.out.println("Loading user menu");
 
-                            try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
 
-
+                            //Creating userview and running it's menu.
                             UserView userView = new UserView(service, user, inputReader, viewHandler);
                             viewHandler.setUserView(userView);
                             viewHandler.getUserView().userMenu();
 
+                            //If the user is admin, run admin menu.
                         } else if (user.getType().equals("admin")) {
                             System.out.println("Loading Admin Menu");
-
-                            try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
 
                             AdminView adminView = new AdminView(service, user, inputReader, viewHandler);
                             viewHandler.setAdminView(adminView);
                             viewHandler.getAdminView().AdminMenu();
 
+
+                            //If the user is teacher, run teacher menu
                         } else if (user.getType().equals("teacher")){
                             System.out.println("Loading Teacher Menu");
 
@@ -89,17 +89,23 @@ public class MainTestController {
 
                         }
 
+                        //If the response is sucessful, but the server could not find the user
+                        //print out "wrong login"
                     } else {
-                        System.out.println("forkert login");
+                        System.out.println("Wrong username/password");
+                        login();
                     }
 
                 }
 
+                //If Response was unsucessful, return HTTP status code.
                 public void error(int status) {
-                    System.out.println(status);
+                    System.out.println("HTTP error: " + status);
 
                 }
             });
+
+
         } catch (Exception e) {
            e.printStackTrace();
             login();

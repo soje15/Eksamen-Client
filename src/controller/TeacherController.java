@@ -1,16 +1,19 @@
 package controller;
 
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
+
 import sdk.connection.ResponseCallback;
-import sdk.models.CourseDTO;
 import sdk.models.UserDTO;
 import sdk.service.Service;
-
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * Created by sorenkolbyejensen on 10/12/2016.
+ */
+
+/**
+ * This class includes the function(s) available for teachers.
+ *
+ * In this application, the teacher must be able to see how many students are assigned to a course.
  */
 public class TeacherController {
     private Service service;
@@ -26,44 +29,38 @@ public class TeacherController {
         this.user = user;
     }
 
+    /**
+     * Returns number of students on a specific course ID.
+     */
+    public void courseParticipants() {
 
+        try {
 
-    public void courseParticipants(){
+            System.out.println("Type in the ID of the course you teach");
+            int courseId = inputReader.nextInt();
 
-        /**
-         * Teacher can only see courses, he is assigned to.
-         */
-        service.getCourses(user.getId(), new ResponseCallback<ArrayList<CourseDTO>>() {
-            public void success(ArrayList<CourseDTO> data) {
-                for (CourseDTO courses: data){
-                    System.out.println(courses.getId());
-                    System.out.println(courses.getCode());
-                    System.out.println(courses.getDisplaytext());
+            //Get courseparticipants from courseid
+            service.getCourseParticipants(courseId, new ResponseCallback<Integer>() {
+
+                //Return integer on sucess, print it.
+                public void success(Integer data) {
+                    System.out.println();
+                    System.out.println("Number of participants on seleceted course: " + data);
+                    System.out.println();
+                    viewHandler.getTeacherView().teacherMenu();
                 }
-            }
 
-            public void error(int status) {
-                System.out.println("HTTP error code: " + status);
-                viewHandler.getTeacherView().teacherMenu();
-            }
-        });
+                //Handling error, returning to teachermenu.
+                public void error(int status) {
+                    System.out.println("HTTP error code: " + status);
+                    viewHandler.getTeacherView().teacherMenu();
+                }
+            });
 
-        System.out.println("Type in the ID of the course you teach");
-        int courseId = inputReader.nextInt();
 
-        service.getCourseParticipants(courseId, new ResponseCallback<Integer>() {
+        } catch (Exception e) {
+            viewHandler.getTeacherView().teacherMenu();
+        }
 
-            public void success(Integer data) {
-                System.out.println("Number of participants on seleceted course: " + data);
-                viewHandler.getTeacherView().teacherMenu();
-            }
-
-            public void error(int status) {
-                System.out.println("HTTP error code: " + status);
-                viewHandler.getTeacherView().teacherMenu();
-            }
-        });
-      
     }
-
 }

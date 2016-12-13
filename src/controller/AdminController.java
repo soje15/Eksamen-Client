@@ -5,6 +5,7 @@ import sdk.models.*;
 import sdk.service.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -15,7 +16,7 @@ import java.util.Scanner;
 /**
  *This controller contains methods needed for the admin to delete reviews on the client.
  */
-public class AdminTestController {
+public class AdminController {
 
 
     private Service service;
@@ -23,7 +24,7 @@ public class AdminTestController {
     private ViewHandler viewHandler;
     private UserDTO user;
 
-    public AdminTestController(Service service, UserDTO user, Scanner inputReader, ViewHandler viewHandler
+    public AdminController(Service service, UserDTO user, Scanner inputReader, ViewHandler viewHandler
     ) {
         this.service = service;
         this.user = user;
@@ -36,6 +37,7 @@ public class AdminTestController {
      */
     public void DeleteReview() {
 
+        //Getting all reviews, so admin may see which reviews he/she can delete.
 service.getAllReviewsInclUserId(new ResponseCallback<ArrayList<ReviewDTO>>() {
 
     public void success(ArrayList<ReviewDTO> data) {
@@ -56,7 +58,9 @@ service.getAllReviewsInclUserId(new ResponseCallback<ArrayList<ReviewDTO>>() {
     }
 });
 
-        Scanner inputReader2 = new Scanner(System.in);
+        /**
+         * Preparing review to be deleted.
+         */
         ReviewDTO deleteReview = new ReviewDTO();
 
         System.out.println("Type in the ID of the review, you wish to delete:");
@@ -103,14 +107,16 @@ service.getAllReviewsInclUserId(new ResponseCallback<ArrayList<ReviewDTO>>() {
                     System.out.println();
                     System.out.println("Review comment: " + reviews.getComment());
                     System.out.println("Review Rating: " + reviews.getRating());
-                    System.out.println("Lecture ID : " + reviews.getLectureId());
+                    System.out.println("Lecture ID: " + reviews.getLectureId());
                     System.out.println("Review ID: " + reviews.getId());
-                    System.out.println("User ID" + reviews.getUserId());
+                    System.out.println("User ID: " + reviews.getUserId());
+
 
                 }
             }
 
             public void error(int status) {
+                System.out.println();
                 System.out.println("HTTP error status: " + status);
                 viewHandler.getAdminView().AdminMenu();
             }
@@ -137,7 +143,8 @@ service.getAllReviewsInclUserId(new ResponseCallback<ArrayList<ReviewDTO>>() {
             }
 
             public void error(int status) {
-                System.out.println("An error has occured: " + status);
+                System.out.println();
+                System.out.println("HTTP error status: " + status);
                 viewHandler.getAdminView().AdminMenu();
 
             }

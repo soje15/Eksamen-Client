@@ -1,5 +1,5 @@
 package view;
-import controller.UserTestController;
+import controller.UserController;
 import controller.ViewHandler;
 import sdk.models.*;
 import sdk.service.Service;
@@ -10,16 +10,22 @@ import java.util.Scanner;
 /**
  * Created by sorenkolbyejensen on 15/11/2016.
  */
+
+/**
+ *
+ * This is the UserView, where the user can choose between
+ * The different functions of the application.
+ */
 public class UserView {
 
     private Service service;
     private Scanner inputReader;
     private ViewHandler viewHandler;
-    private UserTestController userTestController;
+    private UserController userController;
     private UserDTO user;
 
     /**
-     *
+     *Constructor to initialize parameters.
      * @param service
      * @param user
      * @param inputReader
@@ -32,8 +38,8 @@ public class UserView {
         this.viewHandler = viewHandler;
 
 
-        UserTestController userTestController = new UserTestController(service, user, inputReader, viewHandler);
-        this.userTestController = userTestController;
+        UserController userController = new UserController(service, user, inputReader, viewHandler);
+        this.userController = userController;
 
 
     }
@@ -59,35 +65,35 @@ public class UserView {
 
             switch (choice) {
                 case 1:
-                    userTestController.showAllLectures();
+                    userController.showAllLectures();
 
 
                     break;
 
 
                 case 2:
-                    userTestController.showAttendedCourses();
+                    userController.showAttendedCourses();
 
 
 
                     break;
 
                 case 3:
-                    userTestController.addReviewToLecture();
+                    userController.addReviewToLecture();
 
                     break;
 
                 case 4:
-                    userTestController.showReviewsOnLecture();
+                    userController.showReviewsOnLecture();
 
                 case 5:
-                  userTestController.softDeleteReview(user.getId());
+                  userController.softDeleteReview(user.getId());
 
 
                     break;
 
                 case 6:
-                    userTestController.deleteReviewComment(user.getId());
+                    userController.deleteReviewComment(user.getId());
 
 
 

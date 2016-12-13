@@ -62,7 +62,6 @@ public class ConnectionImpl {
         //200-300 generally means, that connection was made successfully
         //400-500 generally means, that something went wrong in the HTTP protocol.
         if (status >= 200 && status < 300) {
-          System.out.println("Connected to " + serverURL);
 
           //Returns HTTP entity. (Entities are in this context,
           //Entities that can be recieved or sent with a HTTP message.

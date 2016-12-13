@@ -1,6 +1,6 @@
 package view;
 
-import controller.AdminTestController;
+import controller.AdminController;
 import controller.ViewHandler;
 import sdk.models.*;
 import sdk.service.Service;
@@ -20,7 +20,7 @@ public class AdminView {
     private Service service;
     private Scanner inputReader;
     private ViewHandler viewHandler;
-    private AdminTestController adminTestController;
+    private AdminController adminController;
     private UserDTO user;
 
     /**
@@ -37,8 +37,8 @@ public class AdminView {
         this.viewHandler = viewHandler;
 
 
-        AdminTestController adminTestController = new AdminTestController(service, user, inputReader, viewHandler);
-        this.adminTestController = adminTestController;
+        AdminController adminController = new AdminController(service, user, inputReader, viewHandler);
+        this.adminController = adminController;
     }
 
 
@@ -58,13 +58,13 @@ public class AdminView {
         switch (choice) {
             case 1:
 
-                adminTestController.DeleteReview();
+                adminController.DeleteReview();
 
 
                 break;
 
             case 2:
-                adminTestController.DeleteReviewComment();
+                adminController.DeleteReviewComment();
 
 
 
@@ -73,7 +73,7 @@ public class AdminView {
 
             case 3:
                 user = null;
-                adminTestController = null;
+                adminController = null;
                 viewHandler.getMainView().MainMenu();
 
                 break;
