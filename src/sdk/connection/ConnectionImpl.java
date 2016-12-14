@@ -1,6 +1,7 @@
 package sdk.connection;
 
 
+import encrypter.EncryptionHandler;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
@@ -87,7 +88,7 @@ public class ConnectionImpl {
 
       // Payload method will only be cast, if a JSON string is returned.
       if(json != null){
-        parser.payload(json);
+        parser.payload(EncryptionHandler.decrypt(json));
       }
 
 

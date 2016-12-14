@@ -90,17 +90,22 @@ public class Service {
      */
     public void deleteReviewComment(ReviewDTO review, final ResponseCallback<Boolean> responseCallback) {
 
-        try {
-
             //We define which type of requests we wish. In this case it is a put request.
             HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/student/reviewcomment/");
 
             //json is added to the header, so the server knows it is getting it in JSON-format.
             putRequest.addHeader("Content-Type", "application/json");
 
-            //Converting our object to an entity, that can be sent to the server.
-            StringEntity jsonReview = new StringEntity(gson.toJson(review));
-            putRequest.setEntity(jsonReview);
+        //Converting our object to an entity, that can be sent to the server over HTTP.
+        StringEntity jsonReview = null;
+        try {
+            jsonReview = new StringEntity(gson.toJson(review));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        //adds our entity to our request.
+        putRequest.setEntity(jsonReview);
 
             //Request is executed
             connectionImpl.execute(putRequest, new ResponseParser() {
@@ -108,12 +113,9 @@ public class Service {
                 //Json recieved in payload.
                 public void payload(String json) {
 
-                    //Json decrypted.
-                    String decryptedJSON = EncryptionHandler.decrypt(json);
-
                     //We set what we expect to recieve from the server (a Boolean)
                     //And use gson, to convert our json to java-language.
-                    Boolean isDeleted = gson.fromJson(decryptedJSON, Boolean.class);
+                    Boolean isDeleted = gson.fromJson(json, Boolean.class);
 
 
                     //call sucessmethod, upon sucessful transaction.
@@ -131,11 +133,6 @@ public class Service {
 
             });
 
-            //Exception caught
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
 
 
     }
@@ -151,20 +148,23 @@ public class Service {
      */
     public void updateReview(ReviewDTO review, final ResponseCallback<Boolean> responseCallback) {
 
-        try {
             HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/student/review/");
 
             putRequest.addHeader("Content-Type", "application/json");
 
-            StringEntity jsonReview = new StringEntity(gson.toJson(review));
-            putRequest.setEntity(jsonReview);
+        StringEntity jsonReview = null;
+        try {
+            jsonReview = new StringEntity(gson.toJson(review));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        putRequest.setEntity(jsonReview);
 
             connectionImpl.execute(putRequest, new ResponseParser() {
 
                 public void payload(String json) {
-                    String decryptedJSON = EncryptionHandler.decrypt(json);
 
-                    Boolean isDeleted = gson.fromJson(decryptedJSON, Boolean.class);
+                    Boolean isDeleted = gson.fromJson(json, Boolean.class);
 
                     responseCallback.success(isDeleted);
 
@@ -174,9 +174,7 @@ public class Service {
                 }
 
             });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 
     /**
@@ -188,16 +186,15 @@ public class Service {
 
     public void getAllReviews(Integer lectureId, final ResponseCallback<ArrayList<ReviewDTO>> responseCallback) {
 
-        try {
+
             HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/review/" + lectureId);
 
 
             this.connectionImpl.execute(getRequest, new ResponseParser() {
 
                 public void payload(String json) {
-                    String decryptedJSON = EncryptionHandler.decrypt(json);
 
-                    ArrayList<ReviewDTO> reviews = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<ReviewDTO>>() {
+                    ArrayList<ReviewDTO> reviews = gson.fromJson(json, new TypeToken<ArrayList<ReviewDTO>>() {
                     }.getType());
 
                     responseCallback.success(reviews);
@@ -210,9 +207,7 @@ public class Service {
                 }
             });
 
-        }catch(Exception e ){
-            System.out.println("Something went wrong");
-        }
+
     }
 
 
@@ -223,15 +218,14 @@ public class Service {
      */
     public void getAllReviewsInclUserId(final ResponseCallback<ArrayList<ReviewDTO>> responseCallback){
 
-        try {
+
             HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/admin/getReviews/");
 
             this.connectionImpl.execute(getRequest, new ResponseParser() {
 
                 public void payload(String json) {
-                    String decryptedJSON = EncryptionHandler.decrypt(json);
 
-                    ArrayList<ReviewDTO> reviews = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<ReviewDTO>>() {
+                    ArrayList<ReviewDTO> reviews = gson.fromJson(json, new TypeToken<ArrayList<ReviewDTO>>() {
                     }.getType());
 
                     responseCallback.success(reviews);
@@ -244,9 +238,7 @@ public class Service {
                 }
             });
 
-        }catch(Exception e){
-            System.out.println("Something went wrong");
-        }
+
 
     }
 
@@ -262,7 +254,7 @@ public class Service {
      */
     public void deleteReview(int userid, int reviewID, final ResponseCallback<Boolean> responsecallback) {
 
-        try {
+
             HttpPut putRequest = new HttpPut(ConnectionImpl.serverURL + "/review/" + userid + reviewID);
 
             putRequest.addHeader("Content-Type", "application/json");
@@ -272,8 +264,8 @@ public class Service {
             connectionImpl.execute(putRequest, new ResponseParser() {
 
                 public void payload(String json) {
-                    String decryptedJSON = EncryptionHandler.decrypt(json);
-                    boolean isDeleted = gson.fromJson(decryptedJSON, Boolean.class);
+
+                    boolean isDeleted = gson.fromJson(json, Boolean.class);
                     responsecallback.success(isDeleted);
 
                 }
@@ -283,9 +275,6 @@ public class Service {
                 }
             });
 
-        }catch(Exception e){
-            System.out.println("Something went wrong");
-        }
 
     }
 
@@ -300,22 +289,25 @@ public class Service {
      */
     public void addReview(ReviewDTO review, final ResponseCallback<String> responseCallback) {
 
-        try {
 
             HttpPost postRequest = new HttpPost(ConnectionImpl.serverURL + "/student/review");
 
             postRequest.addHeader("Content-Type", "application/json");
 
 
-            StringEntity jsonReview = new StringEntity(gson.toJson(review));
-            postRequest.setEntity(jsonReview);
+        StringEntity jsonReview = null;
+        try {
+            jsonReview = new StringEntity(gson.toJson(review));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        postRequest.setEntity(jsonReview);
 
             connectionImpl.execute(postRequest, new ResponseParser() {
 
                 public void payload(String json) {
-                    String decryptedJSON = EncryptionHandler.decrypt(json);
 
-                    String isAdded = gson.fromJson(decryptedJSON, String.class);
+                    String isAdded = gson.fromJson(json, String.class);
                     responseCallback.success(isAdded);
 
 
@@ -328,10 +320,6 @@ public class Service {
             });
 
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-
-        }
 
     }
 
@@ -344,7 +332,6 @@ public class Service {
      */
     public void getAllLecturesFromUserID(Integer userID, final ResponseCallback<ArrayList<LectureDTO>> responseCallback) {
 
-        try {
             HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/lectureByID/" + userID);
 
 
@@ -352,11 +339,10 @@ public class Service {
 
                 public void payload(String json) {
 
-                    String decryptedJSON = EncryptionHandler.decrypt(json);
 
                     //Type token is used, so that GSON can understand that it needs to make an array
                     //containing Lecture-objects.
-                    ArrayList<LectureDTO> lectures = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<LectureDTO>>() {
+                    ArrayList<LectureDTO> lectures = gson.fromJson(json, new TypeToken<ArrayList<LectureDTO>>() {
                     }.getType());
 
 
@@ -368,9 +354,7 @@ public class Service {
                     responseCallback.error(status);
                 }
             });
-        }catch(Exception e){
-            System.out.println("Something went wrong");
-        }
+
 
     }
 
@@ -388,31 +372,35 @@ public class Service {
      */
     public void loginUser(String cbsMail, String password, final ResponseCallback<UserDTO> responseCallback) {
 
-      try {
+
           HttpPost postRequest = new HttpPost(ConnectionImpl.serverURL + "/login");
 
           String encryptedUsername = EncryptionHandler.encrypt(cbsMail);
           String encryptedPassword = EncryptionHandler.encrypt(password);
 
+        /*
+        Prepares user object for login, by setting the encrypted parameters.
+         */
           final UserDTO userInfo = new UserDTO();
           userInfo.setCbsMail(encryptedUsername);
           userInfo.setPassword(encryptedPassword);
 
-          try {
 
-              StringEntity loginInfo = new StringEntity(gson.toJson(userInfo));
-              postRequest.setEntity(loginInfo);
+        StringEntity loginInfo = null;
+        try {
+            loginInfo = new StringEntity(gson.toJson(userInfo));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        postRequest.setEntity(loginInfo);
 
               postRequest.setHeader("Content-Type", "application/json");
 
               this.connectionImpl.execute(postRequest, new ResponseParser() {
                   public void payload(String json) {
 
-                      String decryptedjson = EncryptionHandler.decrypt(json);
-
-
-                      UserDTO userToken = gson.fromJson(decryptedjson, UserDTO.class);
-
+                      UserDTO userToken = gson.fromJson(json, UserDTO.class);
 
                       responseCallback.success(userToken);
                   }
@@ -423,13 +411,8 @@ public class Service {
 
                   }
               });
-          } catch (Exception e) {
-              System.out.println("Something went wrong");
-          }
 
-      }catch(Exception e){
-          System.out.println("Something went wrong");
-      }
+
 
     }
 
@@ -440,15 +423,14 @@ public class Service {
      */
     public void getCourses(int userId, final ResponseCallback<ArrayList<CourseDTO>> responseCallback) {
 
-        try {
+
             HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/course/" + userId);
 
 
             this.connectionImpl.execute(getRequest, new ResponseParser() {
                 public void payload(String json) {
-                    String decryptedJSON = EncryptionHandler.decrypt(json);
 
-                    ArrayList<CourseDTO> courses = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<CourseDTO>>() {
+                    ArrayList<CourseDTO> courses = gson.fromJson(json, new TypeToken<ArrayList<CourseDTO>>() {
                     }.getType());
 
 
@@ -459,9 +441,6 @@ public class Service {
                     responseCallback.error(status);
                 }
             });
-        } catch(Exception e){
-            System.out.println("Something went wrong");
-        }
 
     }
 
@@ -475,15 +454,13 @@ public class Service {
 
     public void getReviews(int userId, final ResponseCallback<ArrayList<ReviewDTO>> responseCallback) {
 
-        try {
             HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/student/getReviews/" + userId);
 
             this.connectionImpl.execute(getRequest, new ResponseParser() {
 
                 public void payload(String json) {
-                    String decryptedJSON = EncryptionHandler.decrypt(json);
 
-                    ArrayList<ReviewDTO> reviews = gson.fromJson(decryptedJSON, new TypeToken<ArrayList<ReviewDTO>>() {
+                    ArrayList<ReviewDTO> reviews = gson.fromJson(json, new TypeToken<ArrayList<ReviewDTO>>() {
                     }.getType());
 
                     responseCallback.success(reviews);
@@ -494,24 +471,19 @@ public class Service {
                 }
             });
 
-        }catch(Exception e){
-            System.out.println("Something went wrong");
-        }
     }
 
 
     public void getCourseParticipants(int courseId, final ResponseCallback<Integer> responseCallback) {
 
-        try {
             HttpGet getRequest = new HttpGet(ConnectionImpl.serverURL + "/teacher/courseParticipants/" + courseId);
 
 
             this.connectionImpl.execute(getRequest, new ResponseParser() {
 
                 public void payload(String json) {
-                    String decryptedJSON = EncryptionHandler.decrypt(json);
 
-                    Integer courseParticipants = gson.fromJson(decryptedJSON, Integer.class);
+                    Integer courseParticipants = gson.fromJson(json, Integer.class);
 
                     responseCallback.success(courseParticipants);
                 }
@@ -521,10 +493,6 @@ public class Service {
                 }
             });
 
-        }
-    catch (Exception e){
-        System.out.println("Something went wrong in the connection");
-    }
 
 
 }}

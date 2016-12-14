@@ -17,14 +17,12 @@ import java.util.Scanner;
  */
 public class TeacherController {
     private Service service;
-    private Scanner inputReader;
     private ViewHandler viewHandler;
     private UserDTO user;
 
 
-    public TeacherController(Service service, UserDTO user, Scanner inputReader, ViewHandler viewHandler) {
+    public TeacherController(Service service, UserDTO user, ViewHandler viewHandler) {
         this.service = service;
-        this.inputReader = inputReader;
         this.viewHandler = viewHandler;
         this.user = user;
     }
@@ -33,7 +31,7 @@ public class TeacherController {
      * Returns number of students on a specific course ID.
      */
     public void courseParticipants() {
-
+        Scanner inputReader = new Scanner(System.in);
         try {
 
             System.out.println("Type in the ID of the course you teach");

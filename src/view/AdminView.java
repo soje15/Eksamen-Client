@@ -5,6 +5,7 @@ import controller.ViewHandler;
 import sdk.models.*;
 import sdk.service.Service;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -18,7 +19,6 @@ public class AdminView {
 
 
     private Service service;
-    private Scanner inputReader;
     private ViewHandler viewHandler;
     private AdminController adminController;
     private UserDTO user;
@@ -27,17 +27,15 @@ public class AdminView {
      *
      * @param service
      * @param user
-     * @param inputReader
      * @param viewHandler
      */
-    public AdminView(Service service, UserDTO user, Scanner inputReader, ViewHandler viewHandler) {
+    public AdminView(Service service, UserDTO user, ViewHandler viewHandler) {
         this.service = service;
         this.user = user;
-        this.inputReader = inputReader;
         this.viewHandler = viewHandler;
 
 
-        AdminController adminController = new AdminController(service, user, inputReader, viewHandler);
+        AdminController adminController = new AdminController(service, user, viewHandler);
         this.adminController = adminController;
     }
 
@@ -46,45 +44,51 @@ public class AdminView {
      *
      *
      */
-    public void AdminMenu(){
+    public void adminMenu() {
 
-        System.out.println("====== ADMIN MENU =======");
-        System.out.println("");
-        System.out.println("(1) - Delete any review");
-        System.out.println("(2) - Delete any review comment");
-        System.out.println("(3) - log out");
-        int choice = inputReader.nextInt();
+        Scanner inputReader = new Scanner(System.in);
 
-        switch (choice) {
-            case 1:
+            System.out.println("====== ADMIN MENU =======");
+            System.out.println("");
+            System.out.println("(1) - Delete any review");
+            System.out.println("(2) - Delete any review comment");
+            System.out.println("(3) - log out");
+        try {
 
-                adminController.DeleteReview();
+            int choice = inputReader.nextInt();
 
+            switch (choice) {
+                case 1:
 
-                break;
-
-            case 2:
-                adminController.DeleteReviewComment();
+                    adminController.DeleteReview();
 
 
+                    break;
 
-                break;
+                case 2:
+                    adminController.DeleteReviewComment();
 
 
-            case 3:
-                user = null;
-                adminController = null;
-                viewHandler.getMainView().MainMenu();
+                    break;
 
-                break;
 
-            default:
-                System.out.println("Default");
+                case 3:
+                    user = null;
+                    adminController = null;
+                    viewHandler.getMainView().mainMenu();
 
-                break;
+                    break;
+
+                default:
+                    System.out.println("Default");
+
+                    break;
+            }
+
+        } catch (InputMismatchException e) {
+            System.out.println("Type in a valid input");
+            adminMenu();
         }
 
-    }
-
-}
+    }}
 

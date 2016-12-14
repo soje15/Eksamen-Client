@@ -26,11 +26,11 @@ public class Run {
         ViewHandler viewHandler = new ViewHandler();
 
         //Creates mainView, passing service, inputreader and viewhandler as parameters
-        MainView mainView = new MainView(service, inputreader, viewHandler);
+        MainView mainView = new MainView(service, viewHandler);
 
         //Adds MainView to viewhandler, and runs MainMenu method.
         viewHandler.setMainView(mainView);
-        viewHandler.getMainView().MainMenu();
+        viewHandler.getMainView().mainMenu();
     }
 }
 

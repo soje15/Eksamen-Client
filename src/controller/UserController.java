@@ -26,14 +26,12 @@ import java.util.Scanner;
 public class UserController {
 
     private Service service;
-    private Scanner inputReader;
     private ViewHandler viewHandler;
     private UserDTO user;
 
-    public UserController(Service service, UserDTO user, Scanner inputReader, ViewHandler viewHandler) {
+    public UserController(Service service, UserDTO user, ViewHandler viewHandler) {
         this.service = service;
         this.user = user;
-        this.inputReader = inputReader;
         this.viewHandler = viewHandler;
     }
 
@@ -44,7 +42,10 @@ public class UserController {
     /**
      *Method to show all Lectures belonging to a specific userId.
      */
+
+
     public void showAllLectures() {
+
 
         //passing user id and implementing Callback interface.
         service.getAllLecturesFromUserID(user.getId(), new ResponseCallback<ArrayList<LectureDTO>>() {
@@ -118,12 +119,11 @@ public class UserController {
      *Method to addreview to a specific lecture.
      */
     public void addReviewToLecture() {
-
+        Scanner inputReader = new Scanner(System.in);
         //Creating list, to avoid user adding review to lecture he/she is not attending.
         final List<Integer> lectureIDList = new ArrayList<Integer>();
 
 
-        try {
             service.getAllLecturesFromUserID(user.getId(), new ResponseCallback<ArrayList<LectureDTO>>() {
                 public void success(ArrayList<LectureDTO> data) {
 
@@ -151,11 +151,6 @@ public class UserController {
                 }
             });
 
-            //Catching exception
-        } catch (Exception e) {
-            System.out.println("Something went wrong, when trying to GET lectures");
-            viewHandler.getUserView().userMenu();
-        }
 
         /*
         Preparing to parse review to server.
@@ -163,6 +158,7 @@ public class UserController {
         ReviewDTO review = new ReviewDTO();
 
         System.out.println("Type in a lecture ID");
+
         int lectureID = inputReader.nextInt();
 
 
@@ -207,7 +203,9 @@ public class UserController {
 
         System.out.println("Type in a comment");
 
-        String comment = inputReader.next();
+        inputReader.nextLine();
+        String comment = inputReader.nextLine();
+
 
         review.setComment(comment);
 
@@ -232,10 +230,16 @@ public class UserController {
         viewHandler.getUserView().userMenu();
     }
 
+
+
     /**
      *Method to show reviews on a specific lecture.
      */
+
+
     public void showReviewsOnLecture() {
+        Scanner inputReader = new Scanner(System.in);
+
 
         //Calling service method to get lectures from a userid, implemeting callbakc interface.
         //Used so user can decide which lecture he wants to view reviews for.
@@ -264,9 +268,9 @@ public class UserController {
         System.out.println();
         System.out.println("Type in the ID of the lecture, you wish to view reviews for.");
 
+
         int lectureId = inputReader.nextInt();
 
-        try {
 
             //Calling getallreviews method, passing lectureid and implementing callback interface.
             service.getAllReviews(lectureId, new ResponseCallback<ArrayList<ReviewDTO>>() {
@@ -292,10 +296,6 @@ public class UserController {
                 }
             });
 
-            //catching exception
-        } catch (Exception e) {
-            System.out.println("Could not find reviews");
-        }
         System.out.println();
         viewHandler.getUserView().userMenu();
 
@@ -308,6 +308,8 @@ public class UserController {
 
     //User id, passed from userview.
     public void softDeleteReview(int userId) {
+        Scanner inputReader = new Scanner(System.in);
+
 
         //Getting reviews from userId, so user can see which reviews he/she can delete.
         service.getReviews(userId, new ResponseCallback<ArrayList<ReviewDTO>>() {
@@ -340,6 +342,7 @@ public class UserController {
         ReviewDTO deleteReview = new ReviewDTO();
 
         System.out.println("Type in the ID of the review, you wish to delete:");
+
         int deleteReviewID = inputReader.nextInt();
 
 
@@ -371,6 +374,9 @@ public class UserController {
      */
 
     public void deleteReviewComment(int userId) {
+        Scanner inputReader = new Scanner(System.in);
+
+
 
         //GEtreviews from userId and implementing callback handler
         service.getReviews(userId, new ResponseCallback<ArrayList<ReviewDTO>>() {
@@ -400,6 +406,8 @@ public class UserController {
         ReviewDTO reviewcomment = new ReviewDTO();
 
         System.out.println("Type in the ID of the review");
+
+
         int reviewsID = inputReader.nextInt();
 
         reviewcomment.setUserId(user.getId());

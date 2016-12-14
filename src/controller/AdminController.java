@@ -20,15 +20,13 @@ public class AdminController {
 
 
     private Service service;
-    private Scanner inputReader;
     private ViewHandler viewHandler;
     private UserDTO user;
 
-    public AdminController(Service service, UserDTO user, Scanner inputReader, ViewHandler viewHandler
+    public AdminController(Service service, UserDTO user, ViewHandler viewHandler
     ) {
         this.service = service;
         this.user = user;
-        this.inputReader = inputReader;
         this.viewHandler = viewHandler;
     }
 
@@ -36,6 +34,8 @@ public class AdminController {
      *Method to delete any review based one UserID and ReviewID
      */
     public void DeleteReview() {
+        Scanner inputReader = new Scanner(System.in);
+
 
         //Getting all reviews, so admin may see which reviews he/she can delete.
 service.getAllReviewsInclUserId(new ResponseCallback<ArrayList<ReviewDTO>>() {
@@ -54,7 +54,7 @@ service.getAllReviewsInclUserId(new ResponseCallback<ArrayList<ReviewDTO>>() {
 
     public void error(int status) {
         System.out.println("HTTP error status: " + status);
-        viewHandler.getAdminView().AdminMenu();
+        viewHandler.getAdminView().adminMenu();
     }
 });
 
@@ -84,13 +84,13 @@ service.getAllReviewsInclUserId(new ResponseCallback<ArrayList<ReviewDTO>>() {
 
             public void error(int status) {
                 System.out.println(status);
-                viewHandler.getAdminView().AdminMenu();
+                viewHandler.getAdminView().adminMenu();
 
             }
         });
 
 
-        viewHandler.getAdminView().AdminMenu();
+        viewHandler.getAdminView().adminMenu();
 
 
     }
@@ -98,7 +98,11 @@ service.getAllReviewsInclUserId(new ResponseCallback<ArrayList<ReviewDTO>>() {
     /**
      *This method will delete any reviews comment, based on the userid and the id of the user.
      */
+
+
     public void DeleteReviewComment() {
+        Scanner inputReader = new Scanner(System.in);
+
 
         service.getAllReviewsInclUserId(new ResponseCallback<ArrayList<ReviewDTO>>() {
 
@@ -118,7 +122,7 @@ service.getAllReviewsInclUserId(new ResponseCallback<ArrayList<ReviewDTO>>() {
             public void error(int status) {
                 System.out.println();
                 System.out.println("HTTP error status: " + status);
-                viewHandler.getAdminView().AdminMenu();
+                viewHandler.getAdminView().adminMenu();
             }
         });
 
@@ -145,12 +149,12 @@ service.getAllReviewsInclUserId(new ResponseCallback<ArrayList<ReviewDTO>>() {
             public void error(int status) {
                 System.out.println();
                 System.out.println("HTTP error status: " + status);
-                viewHandler.getAdminView().AdminMenu();
+                viewHandler.getAdminView().adminMenu();
 
             }
         });
 
-        viewHandler.getAdminView().AdminMenu();
+        viewHandler.getAdminView().adminMenu();
 
     }
 

@@ -16,15 +16,13 @@ public class MainController {
 
 
     private Service service;
-    private Scanner inputReader;
     private ViewHandler viewHandler;
     private String username;
     private String password;
 
 
-    public MainController(Service service, Scanner inputReader, ViewHandler viewHandler) {
+    public MainController(Service service, ViewHandler viewHandler) {
         this.service = service;
-        this.inputReader = inputReader;
         this.viewHandler = viewHandler;
     }
 
@@ -36,6 +34,7 @@ public class MainController {
     public void login() {
         final UserDTO user = new UserDTO();
 
+        Scanner inputReader = new Scanner(System.in);
 
         /*
         Type in login information, to pass it to server to be checked in the database.
@@ -65,7 +64,7 @@ public class MainController {
 
 
                             //Creating userview and running it's menu.
-                            UserView userView = new UserView(service, user, inputReader, viewHandler);
+                            UserView userView = new UserView(service, user, viewHandler);
                             viewHandler.setUserView(userView);
                             viewHandler.getUserView().userMenu();
 
@@ -73,9 +72,9 @@ public class MainController {
                         } else if (user.getType().equals("admin")) {
                             System.out.println("Loading Admin Menu");
 
-                            AdminView adminView = new AdminView(service, user, inputReader, viewHandler);
+                            AdminView adminView = new AdminView(service, user, viewHandler);
                             viewHandler.setAdminView(adminView);
-                            viewHandler.getAdminView().AdminMenu();
+                            viewHandler.getAdminView().adminMenu();
 
 
                             //If the user is teacher, run teacher menu
@@ -83,7 +82,7 @@ public class MainController {
                             System.out.println("Loading Teacher Menu");
 
 
-                            TeacherView teacherView = new TeacherView(service, user, inputReader, viewHandler);
+                            TeacherView teacherView = new TeacherView(service, user, viewHandler);
                             viewHandler.setTeacherView(teacherView);
                             teacherView.teacherMenu();
 

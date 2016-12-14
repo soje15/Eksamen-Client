@@ -19,7 +19,6 @@ import java.util.Scanner;
 public class UserView {
 
     private Service service;
-    private Scanner inputReader;
     private ViewHandler viewHandler;
     private UserController userController;
     private UserDTO user;
@@ -28,17 +27,15 @@ public class UserView {
      *Constructor to initialize parameters.
      * @param service
      * @param user
-     * @param inputReader
      * @param viewHandler
      */
-    public UserView(Service service, UserDTO user, Scanner inputReader, ViewHandler viewHandler) {
+    public UserView(Service service, UserDTO user, ViewHandler viewHandler) {
         this.service = service;
         this.user = user;
-        this.inputReader = inputReader;
         this.viewHandler = viewHandler;
 
 
-        UserController userController = new UserController(service, user, inputReader, viewHandler);
+        UserController userController = new UserController(service, user, viewHandler);
         this.userController = userController;
 
 
@@ -61,6 +58,7 @@ public class UserView {
         System.out.println();
         try {
 
+            Scanner inputReader = new Scanner(System.in);
             int choice = inputReader.nextInt();
 
             switch (choice) {
@@ -104,7 +102,7 @@ public class UserView {
 
                 case 7:
                    user = null;
-                    viewHandler.getMainView().MainMenu();
+                    viewHandler.getMainView().mainMenu();
 
                     break;
 
