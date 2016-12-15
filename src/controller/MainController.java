@@ -1,12 +1,10 @@
 package controller;
 
-import com.sun.tools.doclets.internal.toolkit.util.DocFinder;
 import sdk.connection.ResponseCallback;
 import sdk.models.UserDTO;
 import sdk.service.Service;
 import view.*;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**

@@ -1,6 +1,5 @@
 package view;
 
-import com.sun.tools.doclets.internal.toolkit.util.DocFinder;
 import controller.TeacherController;
 import controller.ViewHandler;
 import sdk.models.UserDTO;
