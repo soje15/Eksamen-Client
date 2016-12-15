@@ -87,6 +87,7 @@ public class ConnectionImpl {
       String json = this.httpClient.execute(uriRequest, responseHandler);
 
       // Payload method will only be cast, if a JSON string is returned.
+      //It will automically decrypt any JSON it recieves.
       if(json != null){
         parser.payload(EncryptionHandler.decrypt(json));
       }
